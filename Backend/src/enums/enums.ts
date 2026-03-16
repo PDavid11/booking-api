@@ -9,3 +9,10 @@ export enum Gender {
     MALE = "MALE",
     FEMALE = "FEMALE"
 }
+
+export enum EmployeeRole {
+    OWNER = "OWNER",
+    EMPLOYEE = "EMPLOYEE"
+}
+
+ 
