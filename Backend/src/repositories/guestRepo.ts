@@ -12,7 +12,7 @@ export class GuestRepo {
     get Guest() {return this.guest}
 
     getByID(ID: string): {success: boolean, reason?: string, result?: Guest} {
-        let result = this.Guest.find(r => r.ID === ID)
+        let result = this.guest.find(r => r.ID === ID)
         if (!result) {
             return {success: false, reason: "Not found"}          
         } else {
