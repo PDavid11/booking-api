@@ -1,8 +1,9 @@
 import { AppointmentStatus } from "../enums/enums.js";
+import { v4 as uuid } from "uuid"
 
 export class Appointment {
 
-    private ID : string
+    private id : string
     private guestID: string
     private serviceID: string
     private startTime: Date
@@ -10,8 +11,8 @@ export class Appointment {
     private status: AppointmentStatus
     private createdAt: Date
 
-    constructor(ID: string, guestID: string, serviceID: string, startTime: Date, endTime: Date, status: AppointmentStatus, createdAt: Date) {
-        this.ID = ID
+    constructor(guestID: string, serviceID: string, startTime: Date, endTime: Date) {
+        this.id = uuid()
         this.guestID = guestID
         this.serviceID = serviceID
         this.startTime = startTime
@@ -20,10 +21,13 @@ export class Appointment {
         this.createdAt = new Date()
     }
 
-    getID() {return this.ID}
-    getStatus() {return this.status}
-    getStartTime() {return this.startTime}
-    getEndTime() {return this.endTime}
+    get ID() {return this.id}
+    get Status() {return this.status}
+    get StartTime() {return this.startTime}
+    get EndTime() {return this.endTime}
+    get GuestID() {return this.guestID}
+    get ServiceID() {return this.serviceID}
+    get CreatedAt() {return this.createdAt}
 
     confirm() {
         if (this.status === AppointmentStatus.PENDING) {

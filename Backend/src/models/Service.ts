@@ -1,20 +1,20 @@
 import { v4 as uuid } from "uuid"
 
 export class Service {
-    private ID : string
+    private id : string
     private name : string
     private durationMinutes : number
     private price : number
 
     constructor(name: string, durationMinutes: number, price: number) {
-        this.ID = uuid()
+        this.id = uuid()
         this.name = name
         this.durationMinutes = durationMinutes
         this.price = price
     }
 
-    getID() {return this.ID}
-    getName() {return this.name}
-    getDurationMinutes() {return this.durationMinutes}
-    getPrice() {return this.price}
+    get ID() {return this.id}
+    get Name() {return this.name}
+    get DurationMinutes() {return this.durationMinutes}
+    get Price() {return this.price}
 }
