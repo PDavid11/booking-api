@@ -22,4 +22,8 @@ export class Employee {
     get Instagram() {return this.instagram}
     get Role() {return this.role}
 
+    set Name (newName: string) {this.name = newName}
+    set Phone (newPhone: string) {this.phone = newPhone}
+    set Instagram (newInstagram: string) {this.instagram = newInstagram}
+    set Role (newRole: EmployeeRole) {this.role = newRole}
 }
