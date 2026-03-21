@@ -5,16 +5,18 @@ export class Appointment {
 
     private id : string
     private guestID: string
+    private employeeID: string
     private serviceID: string
     private startTime: Date
     private endTime: Date
     private status: AppointmentStatus
     private createdAt: Date
 
-    constructor(guestID: string, serviceID: string, startTime: Date, endTime: Date) {
+    constructor(guestID: string, serviceID: string, employeeID: string,  startTime: Date, endTime: Date) {
         this.id = uuid()
         this.guestID = guestID
         this.serviceID = serviceID
+        this.employeeID = employeeID
         this.startTime = startTime
         this.endTime = endTime
         this.status = AppointmentStatus.PENDING
@@ -26,6 +28,7 @@ export class Appointment {
     get StartTime() {return this.startTime}
     get EndTime() {return this.endTime}
     get GuestID() {return this.guestID}
+    get EmployeeID() {return this.employeeID}
     get ServiceID() {return this.serviceID}
     get CreatedAt() {return this.createdAt}
 
