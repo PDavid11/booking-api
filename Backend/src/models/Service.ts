@@ -17,4 +17,8 @@ export class Service {
     get Name() {return this.name}
     get DurationMinutes() {return this.durationMinutes}
     get Price() {return this.price}
+
+    set Name(NewName: string) {this.name = NewName}
+    set DurationMinutes(NewDurationMinutes : number) {this.durationMinutes = NewDurationMinutes}
+    set Price(NewPrice : number) {this.price = NewPrice}
 }
