@@ -13,6 +13,10 @@ export class EmployeeService {
         this.employeeService.add(name, phone, instagram, role)
     }
 
+    delete(ID: string):{success: boolean, reason?: string} {
+        return this.employeeService.delete(ID)
+    }
+
     modifyName(ID: string, newName: string): {success: boolean, reason?: string} {
         return this.employeeService.modifyName(ID, newName)
     }
