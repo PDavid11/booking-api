@@ -29,8 +29,10 @@ export class EmployeeRepo {
         }
     }
 
-    add(name: string, phone: string, instagram: string, role: EmployeeRole) {
-        this.employee.push(new Employee(name, phone, instagram, role))
+    add(name: string, phone: string, instagram: string, role: EmployeeRole): {result: Employee} {
+        let newEmployee = new Employee(name, phone, instagram, role)
+        this.employee.push(newEmployee)
+        return {result : newEmployee}
     }
 
     delete(ID: string): {success: boolean, reason?: string} {

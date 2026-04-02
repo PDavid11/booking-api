@@ -19,8 +19,10 @@ export class ServiceRepo {
         }
     }
 
-    add(name: string, durationMinutes: number, price: number) {
-        this.service.push(new Service(name, durationMinutes, price))
+    add(name: string, durationMinutes: number, price: number): {result: Service} {
+        let NewService = new Service(name, durationMinutes, price)
+        this.service.push(NewService)
+        return {result: NewService}
     }
     
     delete(ID: string): {success: boolean, reason?: string} {

@@ -10,7 +10,7 @@ export class EmployeeService {
     }
 
     add(name: string, phone: string, instagram: string, role: EmployeeRole) {
-        this.employeeService.add(name, phone, instagram, role)
+        return this.employeeService.add(name, phone, instagram, role)
     }
 
     delete(ID: string):{success: boolean, reason?: string} {

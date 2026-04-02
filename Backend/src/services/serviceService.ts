@@ -9,7 +9,11 @@ export class ServiceService {
     }
 
     add(name: string, durationMinutes: number, price: number) {
-        this.serviceService.add(name, durationMinutes, price)
+        return this.serviceService.add(name, durationMinutes, price)
+    }
+
+    delete(ID: string): {success: boolean, reason?: string} {
+        return this.serviceService.delete(ID)
     }
 
     modifyName(ID: string, newName: string): {success: boolean, reason?: string} {

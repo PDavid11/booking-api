@@ -11,15 +11,15 @@ export class EmployeeController {
 
     add(req: Request, res: Response) {
         const {name, phone, instagram, role} = req.body
-        this.employeeController.add(name, phone, instagram, role)
-        res.status(201).json({success: true})
+        const result = this.employeeController.add(name, phone, instagram, role)
+        res.status(201).json(result)
     }
 
     delete(req: Request, res: Response) {
         const { ID } = req.body
         const result = this.employeeController.delete(ID)
         if (!result.success) {
-            res.status(404).json(result)
+            res.status(404).json(result.reason)
         } else {
             res.status(200).json(result)
         }

@@ -29,10 +29,10 @@ export class GuestRepo {
         }
     }
 
-    add(name: string, phone: string, gender: Gender): {ID: string} {
+    add(name: string, phone: string, gender: Gender): {result : Guest} {
         let NewGuest = new Guest(name, phone, gender)
         this.guest.push(NewGuest)
-        return {ID: NewGuest.ID}
+        return {result : NewGuest}
     }
 
     delete(ID: string): {success: boolean, reason?: string} {

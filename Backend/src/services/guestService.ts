@@ -19,13 +19,12 @@ export class GuestService {
         }
     }
 
-    add(name: string, phone: string, gender: Gender) : {ID: string} {
+    add(name: string, phone: string, gender: Gender) : {result : Guest} {
         let result = this.guestService.getByPhone(phone)
         if (!result.success) {
-            let newGuest = this.guestService.add(name, phone, gender)
-            return {ID: newGuest.ID}
+            return this.guestService.add(name, phone, gender)
         } else {
-            return {ID: result.result!.ID}
+            return {result : result.result!}
         }
     }
 }
