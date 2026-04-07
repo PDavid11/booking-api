@@ -2,7 +2,7 @@ import { GuestService } from "./guestService.js";
 import { EmployeeRepo } from "../repositories/employeeRepo.js";
 import { ServiceRepo } from "../repositories/serviceRepo.js";
 import { AppointmentRepo } from "../repositories/appointmentRepo.js";
-import { Gender } from "../enums/enums.js";
+import { AppointmentStatus, Gender } from "../enums/enums.js";
 
 export class AppointmentService {
 
@@ -19,15 +19,42 @@ export class AppointmentService {
     }
 
     confirmAppointment(ID: string): {success: boolean, reason?: string} {
-        return this.appointmentRepo.confirmAppointment(ID)
+        const result = this.appointmentRepo.getByID(ID)
+        if (!result.success) {
+            return {success: false, reason: result.reason!}
+        } else {
+            if (result.result!.Status !== AppointmentStatus.PENDING) {
+                return {success: false, reason: "This appointment is not pending!"}
+            } else {
+                return this.appointmentRepo.confirmAppointment(ID)
+            }           
+        }        
     }
 
     rejectAppointment(ID: string): {success: boolean, reason?: string} {
-        return this.appointmentRepo.rejectAppointment(ID)
+        const result = this.appointmentRepo.getByID(ID)
+        if (!result.success) {
+            return {success: false, reason: result.reason!}
+        } else {
+            if (result.result!.Status !== AppointmentStatus.PENDING) {
+                return {success: false, reason: "This appointment is not pending!"}
+            } else {
+                return this.appointmentRepo.rejectAppointment(ID)
+            }           
+        }
     }
 
     cancelAppointment(ID: string): {success: boolean, reason?: string} {
-        return this.appointmentRepo.cancelAppointment(ID)
+        const result = this.appointmentRepo.getByID(ID)
+        if (!result.success) {
+            return {success: false, reason: result.reason!}
+        } else {
+            if (result.result!.Status === AppointmentStatus.CONFIRMED || result.result!.Status === AppointmentStatus.PENDING) {
+                return this.appointmentRepo.cancelAppointment(ID)
+            } else {
+                return {success: false, reason: "This appointment is not pending or confirmed!"}
+            }           
+        }
     }
 
     add(name: string, phone: string, gender: Gender, employeeID: string, serviceID: string, startTime: Date, endTime: Date): {success: boolean, reason?: string} {
@@ -37,7 +64,7 @@ export class AppointmentService {
         } else if (!this.serviceRepo.getByID(serviceID).success) {
             return {success: false, reason: "Service not found"}
         } else {
-             return this.appointmentRepo.add(guest.ID, serviceID, employeeID, startTime, endTime)
+             return this.appointmentRepo.add(guest.result.ID, serviceID, employeeID, startTime, endTime)
         }
     }
 }
