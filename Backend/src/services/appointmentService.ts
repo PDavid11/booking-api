@@ -3,6 +3,7 @@ import { EmployeeRepo } from "../repositories/employeeRepo.js";
 import { ServiceRepo } from "../repositories/serviceRepo.js";
 import { AppointmentRepo } from "../repositories/appointmentRepo.js";
 import { AppointmentStatus, Gender } from "../enums/enums.js";
+import type { Appointment } from "../models/Appointment.js";
 
 export class AppointmentService {
 
@@ -66,5 +67,13 @@ export class AppointmentService {
         } else {
              return this.appointmentRepo.add(guest.result.ID, serviceID, employeeID, startTime, endTime)
         }
+    }
+
+    getByID(ID: string): {success: boolean, reason?: string} {
+        return this.appointmentRepo.getByID(ID)
+    }
+
+    getByStatus(status: AppointmentStatus): {success: boolean, reason?: string, result?: Appointment[]} {
+        return this.appointmentRepo.getByStatus(status)
     }
 }
