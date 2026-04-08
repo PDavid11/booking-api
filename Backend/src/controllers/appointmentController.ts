@@ -1,9 +1,8 @@
 import type { AppointmentStatus } from "../enums/enums.js";
 import { AppointmentService } from "../services/appointmentService.js";
-import { GuestService } from "../services/guestService.js";
 import type { Request, Response } from "express";
 
-export class appointmentController {
+export class AppointmentController {
 
     private appointmentController : AppointmentService
 
@@ -18,28 +17,30 @@ export class appointmentController {
     }
 
     modifyStatus(req: Request, res: Response) {
-        const {ID, newStatus} = req.body
-        if (newStatus === "confirm") {
-            const result = this.appointmentController.confirmAppointment(ID)
+        const {id, status} = req.body
+        if (status === "CONFIRMED") {
+            const result = this.appointmentController.confirmAppointment(id)
             if (!result.success) {
                 res.status(500).json(result.reason)
             } else {
-                res.status(200)
+                res.status(200).json({success: true})
             }
-        } else if (newStatus === "reject") {
-            const result = this.appointmentController.rejectAppointment(ID)
+        } else if (status === "REJECTED") {
+            const result = this.appointmentController.rejectAppointment(id)
             if (!result.success) {
                 res.status(500).json(result.reason)
             } else {
-                res.status(200)
+                res.status(200).json({success: true})
             }
-        } else if (newStatus === "cancel") {
-            const result = this.appointmentController.cancelAppointment(ID)
+        } else if (status === "CANCELLED") {
+            const result = this.appointmentController.cancelAppointment(id)
             if (!result.success) {
                 res.status(500).json(result.reason)
             } else {
-                res.status(200)
+                res.status(200).json({success: true})
             }
+        } else {
+            res.status(500).json({success: false})
         }
     }
 
