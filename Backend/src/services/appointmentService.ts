@@ -76,4 +76,8 @@ export class AppointmentService {
     getByStatus(status: AppointmentStatus): {success: boolean, reason?: string, result?: Appointment[]} {
         return this.appointmentRepo.getByStatus(status)
     }
+
+    getByEmployeeID(ID: string): {success: boolean, reason?: string, result?: Appointment[]} {
+        return this.appointmentRepo.getByEmployeeID(ID)
+    }
 }

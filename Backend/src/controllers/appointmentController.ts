@@ -63,4 +63,14 @@ export class AppointmentController {
             res.status(200).json(result)
         }
     }
+
+    getByEmployeeID(req: Request, res: Response) {
+        const id = req.params['employeeID'] as string
+        const result = this.appointmentController.getByEmployeeID(id)
+        if (!result.success) {
+            res.status(404).json(result.reason)
+        } else {
+            res.status(200).json(result)
+        }
+    }
 }
