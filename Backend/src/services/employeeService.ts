@@ -1,5 +1,6 @@
 import type { EmployeeRole } from "../enums/enums.js";
 import { EmployeeRepo } from "../repositories/employeeRepo.js";
+import { Employee } from "../models/Employee.js";
 
 export class EmployeeService {
 
@@ -7,6 +8,10 @@ export class EmployeeService {
 
     constructor(employeeService: EmployeeRepo) {
         this.employeeService = employeeService
+    }
+    
+    getAll(): {result : Employee[]} {
+        return {result: this.employeeService.Employee}
     }
 
     add(name: string, phone: string, instagram: string, role: EmployeeRole) {

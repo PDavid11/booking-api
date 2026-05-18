@@ -1,4 +1,5 @@
 import { ServiceRepo } from "../repositories/serviceRepo.js";
+import { Service } from "../models/Service.js";
 
 export class ServiceService {
 
@@ -26,5 +27,9 @@ export class ServiceService {
 
     modifyDurationMinutes(ID: string, newDurationMinutes: number): {success: boolean, reason?: string} {
         return this.serviceService.modifyDurationMinutes(ID, newDurationMinutes)
+    }
+
+    getAll() : {result: Service[]} {
+        return {result : this.serviceService.Service}
     }
 }

@@ -37,4 +37,9 @@ export class EmployeeController {
             res.status(400).json({success: false})
         }
     }
+
+    getAll(req: Request, res: Response) {
+        const result = this.employeeController.getAll()
+        res.status(200).json(result)
+    }
 }
