@@ -1,3 +1,4 @@
+import cors from "cors"
 import express from "express"
 import EmployeeRoutes from "./routes/employeeRoutes.js"
 import GuestRoutes from "./routes/guestRoutes.js"
@@ -6,6 +7,7 @@ import AppointmentRoutes from "./routes/appointmentRoutes.js"
 
 const app = express()
 const PORT = 3000
+app.use(cors())
 app.use(express.json())
 app.use('/employees', EmployeeRoutes)
 app.use('/guests', GuestRoutes)

@@ -39,6 +39,6 @@ export class ServiceController {
 
      getAll(req: Request, res: Response) {
         const result = this.serviceController.getAll()
-        res.status(200).json(res)
+        res.status(200).json(result)
      }
 }

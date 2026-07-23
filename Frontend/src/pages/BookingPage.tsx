@@ -13,11 +13,11 @@ function BookingPage () {
     useEffect(() => {
         fetch("http://localhost:3000/employees")
             .then(res => res.json())
-            .then(data => setEmployees(data))
+            .then(data => setEmployees(data.result))
 
         fetch("http://localhost:3000/services")
             .then(res => res.json())
-            .then(data => setServices(data))
+            .then(data => setServices(data.result))
     }, [])
 
     useEffect(() => {
@@ -40,7 +40,7 @@ function BookingPage () {
             <div className="Service-dropdown">
                 <Dropdown
                     label="Select Service"
-                    options={employees.map(e => ({id: e.id, label: e.name}))}
+                    options={services.map(e => ({id: e.id, label: e.name}))}
                     onSelect={(id) => setSelectedService(id)}
                     />
             </div>
