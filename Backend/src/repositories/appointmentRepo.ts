@@ -11,6 +11,14 @@ export class AppointmentRepo {
 
     get Appointment() {return this.appointment}
 
+    getAll(): {success: boolean, reason?: string, result?: Appointment[]} {
+        if (this.appointment.length < 1) {
+            return {success: false, reason: "Not found"}
+        } else {
+            return {success: true, result: this.appointment}
+        }
+    }
+
     getByID(ID: string): {success: boolean, reason?: string, result?: Appointment} {
         let result = this.appointment.find(r => r.ID === ID)
         if (!result) {

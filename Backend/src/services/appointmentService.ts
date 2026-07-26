@@ -58,14 +58,17 @@ export class AppointmentService {
         }
     }
 
-    add(name: string, phone: string, gender: Gender, employeeID: string, serviceID: string, startTime: Date, endTime: Date): {success: boolean, reason?: string} {
+    add(name: string, phone: string, gender: Gender, employeeID: string, serviceID: string, startTime: string): {success: boolean, reason?: string} {
         let guest = this.guestService.add(name, phone, gender)
+        const duration = this.serviceRepo.getByID(serviceID).result!.DurationMinutes
+        const startDate = new Date(startTime)
+        const endTime = new Date(startDate.getTime() + duration * 60000)
         if (!this.employeeRepo.getByID(employeeID).success) {
             return {success: false, reason: "Employee not found"}
         } else if (!this.serviceRepo.getByID(serviceID).success) {
             return {success: false, reason: "Service not found"}
         } else {
-             return this.appointmentRepo.add(guest.result.ID, serviceID, employeeID, startTime, endTime)
+             return this.appointmentRepo.add(guest.result.ID, serviceID, employeeID, startDate, endTime)
         }
     }
 
@@ -79,5 +82,9 @@ export class AppointmentService {
 
     getByEmployeeID(ID: string): {success: boolean, reason?: string, result?: Appointment[]} {
         return this.appointmentRepo.getByEmployeeID(ID)
+    }
+
+    getAll(): {success: boolean, reason?: string, result?: Appointment[]} {
+        return this.appointmentRepo.getAll()
     }
 }

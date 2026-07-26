@@ -11,8 +11,8 @@ export class AppointmentController {
     }
 
     add(req: Request, res: Response) {
-        const {name, phone, gender, serviceID, employeeID, startTime, endTime} = req.body
-        const result = this.appointmentController.add(name, phone, gender, employeeID, serviceID, startTime, endTime)
+        const {name, phone, gender, serviceID, employeeID, startTime} = req.body
+        const result = this.appointmentController.add(name, phone, gender, employeeID, serviceID, startTime)
         res.status(201).json(result)
     }
 
@@ -67,6 +67,15 @@ export class AppointmentController {
     getByEmployeeID(req: Request, res: Response) {
         const id = req.params['employeeID'] as string
         const result = this.appointmentController.getByEmployeeID(id)
+        if (!result.success) {
+            res.status(404).json(result.reason)
+        } else {
+            res.status(200).json(result)
+        }
+    }
+
+    getAll(req: Request, res: Response) {
+        const result = this.appointmentController.getAll()
         if (!result.success) {
             res.status(404).json(result.reason)
         } else {

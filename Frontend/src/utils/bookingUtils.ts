@@ -23,34 +23,38 @@ export const checkIsSlotAvailable = ({
         return false
     }
 
-    const currentService = services.find(s => s.id === selectedService)
+    const currentService = services.find(service => service.id === selectedService)
     if (!currentService) {
         return false
     }
 
-    const requiredSlotsCount = Math.ceil(currentService.durationMinutes / 30)
+    const slotStart = new Date(`${selectedDate}T${slotTime}:00`)
+    const slotEnd = new Date(slotStart.getTime() + currentService.durationMinutes * 60000)
 
-    const currentIndex = TIME_SLOTS.indexOf(slotTime as any)
-    if (currentIndex === -1 || currentIndex + requiredSlotsCount > TIME_SLOTS.length) {
-        return false
+    const endHours = slotEnd.getHours();
+    const endMinutes = slotEnd.getMinutes();
+
+    if (endHours > 18 || (endHours === 18 && endMinutes > 0)) {
+    return false;
     }
 
-    for (let i = 0 ; i < requiredSlotsCount; i++) {
+    for (const app of existingAppointments) {
+        const appEmployeeID = app.employeeID || (app as any).EmployeeID
 
-        const checkTime = TIME_SLOTS[currentIndex + i]
+        if (appEmployeeID !== selectedEmployee) {
+            continue
+        }
 
-        const isSlotTaken = existingAppointments.some((app) => {
-            const [appDate, appTimeWithSec] = app.startTime.split("T")
-            const appTime = appTimeWithSec.substring(0, 5)
+        const appStart = new Date(app.startTime)
 
-            return (
-                app.employeeID === selectedEmployee &&
-                appDate === selectedDate &&
-                appTime === checkTime
-            )
-        })
+        const appService = services.find(s => s.id === app.serviceID || (app as any).ServiceID)
+        const appDuration = appService ? appService.durationMinutes : 30
+        const appEnd = app.endTime
+            ? new Date(app.endTime)
+            : new Date(appStart.getTime() + appDuration * 60000)
 
-        if (isSlotTaken) {
+        const isOverlap = (slotStart < appEnd) && (slotEnd > appStart)
+        if (isOverlap) {
             return false
         }
     }
