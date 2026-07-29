@@ -23,3 +23,12 @@ export type Appointment = {
     status: "PENDING" | "CONFIRMED" | "CANCELLED" | "REJECTED"
     createdAt: string
 }
+
+export type AppointmentCard = {
+    id: string
+    guestName: string
+    phone: string
+    startTime: string
+    timeSlot: string
+    status: string
+}
