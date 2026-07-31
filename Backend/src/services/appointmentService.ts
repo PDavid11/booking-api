@@ -3,7 +3,7 @@ import { EmployeeRepo } from "../repositories/employeeRepo.js";
 import { ServiceRepo } from "../repositories/serviceRepo.js";
 import { AppointmentRepo } from "../repositories/appointmentRepo.js";
 import { AppointmentStatus, Gender } from "../enums/enums.js";
-import type { Appointment } from "../models/Appointment.js";
+import { Appointment } from "../models/Appointment.js";
 
 export class AppointmentService {
 
@@ -76,8 +76,25 @@ export class AppointmentService {
         return this.appointmentRepo.getByID(ID)
     }
 
-    getByStatus(status: AppointmentStatus): {success: boolean, reason?: string, result?: Appointment[]} {
-        return this.appointmentRepo.getByStatus(status)
+    getByStatus(status: AppointmentStatus): {success: boolean, reason?: string, result?: any[]} {
+        const appointmentP = this.appointmentRepo.getByStatus(status)
+        const appointmentWithGuestData = (
+            appointmentP.result?.map((app) => {
+                const guest = this.guestService.getByID(app.guestID)
+                return {
+                    ...app,
+                    guestName: guest.result!.Name,
+                    phone: guest.result!.Phone
+                }
+            }) ?? []
+        )
+        if (!appointmentP.success) {
+            return appointmentP.reason !== undefined
+                ? {success: appointmentP.success, reason: appointmentP.reason}
+                : {success: appointmentP.success}        
+        } else {
+            return {success: appointmentP.success, result: appointmentWithGuestData}
+        }
     }
 
     getByEmployeeID(ID: string): {success: boolean, reason?: string, result?: Appointment[]} {
@@ -85,6 +102,12 @@ export class AppointmentService {
     }
 
     getAll(): {success: boolean, reason?: string, result?: Appointment[]} {
-        return this.appointmentRepo.getAll()
+        const appointments = this.appointmentRepo.getAll()
+        const activeAppointments = appointments.result?.filter(app => (app.Status !== "CANCELLED" && app.Status !== "REJECTED"))
+        return {
+            success: appointments.success,
+            ...(appointments.reason !== undefined ? {reason: appointments.reason} : {}),
+            ...(activeAppointments !== undefined ? {result: activeAppointments} : {})
+        }
     }
 }

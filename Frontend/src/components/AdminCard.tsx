@@ -15,8 +15,13 @@ export default function AdminCard({ appointment, onConfirm, onCancel }: AdminCar
 
         if (!isoString) return { date: '', time: '' }
 
-        const [date, timeWithMs] = isoString.split('T')
-        const time = timeWithMs.slice(0, 5) 
+        const dateObj = new Date(isoString)
+        const date = dateObj.toLocaleDateString('hu-HU')
+
+        const time = dateObj.toLocaleTimeString('hu-HU', {
+            hour: '2-digit',
+            minute: '2-digit'
+        })
 
         return { date, time }
     }
@@ -34,12 +39,12 @@ export default function AdminCard({ appointment, onConfirm, onCancel }: AdminCar
             <Button
                 text="Confirm"
                 color="green"
-                onClick={() => alert(`Confirmed : ${appointment.guestName}`)}
+                onClick={() => (alert(`Confirmed : ${appointment.guestName}`), onConfirm && onConfirm(appointment.id))}
                 />
             <Button
                 text="Cancel"
                 color="red"
-                onClick={() => alert(`Cancelled : ${appointment.guestName}`)}
+                onClick={() => (alert(`Cancelled : ${appointment.guestName}`), onCancel && onCancel(appointment.id))}
                 />
         </div>
     )

@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid"
 export class Appointment {
 
     private id : string
-    private guestID: string
+    readonly guestID: string
     private employeeID: string
     private serviceID: string
     private startTime: Date
