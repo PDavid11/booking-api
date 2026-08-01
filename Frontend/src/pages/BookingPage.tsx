@@ -75,6 +75,10 @@ function BookingPage () {
             if (response.ok) {
                 alert("Appointment booked successfully!(Wait for confirmation.)")
                 setSelectedSlot(null)
+                setCustomerName("")
+                setPhoneNumber("")
+                setGender("")
+                setSelectedDate("")
                 fetch("http://localhost:3000/appointments")
                     .then(res => res.json())
                     .then(data => {

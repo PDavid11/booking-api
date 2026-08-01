@@ -8,18 +8,25 @@ export default function AdminPage() {
 
 const [Appointments, setAppointments] = useState<AppointmentCard[]>([])
 
-    useEffect(() => {
+    const fetchAppointments = () => {
         fetch('http://localhost:3000/appointments/status/PENDING')
             .then((res) => res.json())
             .then((data) => {
-                setAppointments(data.result)
+                if (data.success && Array.isArray(data.result)) {
+                    setAppointments(data.result)
+                } else {
+                    setAppointments([])
+                }
             })
             
             .catch((error) => {
                 console.error('Error fetching appointments:', error)
+                setAppointments([])
             })
-            .catch(() => setAppointments([]))
-        }, [Appointments])
+        }
+    useEffect(() => {
+        fetchAppointments()
+    }, [])
 
         const handleStatusChange = (id: string, newStatus: 'CONFIRMED' | 'CANCELLED' | 'REJECTED') => {
             fetch(`http://localhost:3000/appointments`, {
@@ -37,6 +44,9 @@ const [Appointments, setAppointments] = useState<AppointmentCard[]>([])
                     alert('Status change error!')
                 }
             })
+            .then(() => {
+                fetchAppointments()
+            })
             .catch((err) => console.error('PATCH request error:', err))
         }
 
@@ -47,7 +57,7 @@ const [Appointments, setAppointments] = useState<AppointmentCard[]>([])
                 Back to Landing Page
             </Link>
 
-            {Appointments.length === 0 ? (
+            {!Appointments || !Array.isArray(Appointments) || Appointments.length === 0 ? (
                 <div className='empty-state'>
                     <p>There are currently no pending appointment.</p>
                 </div>
