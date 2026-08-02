@@ -5,6 +5,7 @@ import { TIME_SLOTS } from "../constants/timeSlots";
 import CalendarButton from "../components/CalendarButton";
 import Button from "../components/Button";
 import { checkIsSlotAvailable } from "../utils/bookingUtils";
+import { Link } from "react-router-dom";
 
 function BookingPage () {
     const [employees, setEmployees] = useState<Employee[]>([])
@@ -98,6 +99,8 @@ function BookingPage () {
 
     return(
         <div className="Booking-Page">
+            <Link to="/">Back to Landing Page</Link>
+            <h1>Book an Appointment</h1>
             <div className="Employee-dropdown">
                 <Dropdown
                     label="Select Employee"

@@ -52,11 +52,10 @@ const [Appointments, setAppointments] = useState<AppointmentCard[]>([])
 
     return (
         <div>
-            <h1>Admin Page</h1>
             <Link to="/">
                 Back to Landing Page
             </Link>
-
+            <h1>Admin Page</h1>
             {!Appointments || !Array.isArray(Appointments) || Appointments.length === 0 ? (
                 <div className='empty-state'>
                     <p>There are currently no pending appointment.</p>

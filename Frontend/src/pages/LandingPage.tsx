@@ -13,7 +13,19 @@ export default function LandingPage() {
                 <Link to="/admin" className="btn-primary">
                     AdminPage
                 </Link>
-            </div>       
+            </div> 
+
+            <div>
+                <Link to="/about" className="btn-primary">
+                    About Us
+                </Link>
+            </div>
+
+            <div>
+                <Link to="/gallery" className="btn-primary">
+                    Gallery
+                </Link>
+            </div>
         </div>
     )
 }
