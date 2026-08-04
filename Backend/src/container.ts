@@ -10,6 +10,9 @@ import { GuestController } from "./controllers/guestController.js";
 import { EmployeeController } from "./controllers/employeeController.js";
 import { ServiceController } from "./controllers/serviceController.js";
 import { AppointmentController } from "./controllers/appointmentController.js";
+import { AuthService } from "./services/authService.js";
+import { AuthController } from "./controllers/authController.js";
+
 
 export const guestRepo = new GuestRepo()
 export const employeeRepo = new EmployeeRepo()
@@ -19,7 +22,9 @@ export const guestService = new GuestService(guestRepo)
 export const employeeService = new EmployeeService(employeeRepo)
 export const serviceService = new ServiceService(serviceRepo)
 export const appointmentService = new AppointmentService(guestService, employeeRepo, serviceRepo, appointmentRepo)
+export const authService = new AuthService()
 export const guestController = new GuestController(guestService)
 export const employeeController = new EmployeeController(employeeService)
 export const serviceController = new ServiceController(serviceService)
 export const appointmentController = new AppointmentController(appointmentService)
+export const authController = new AuthController(authService)

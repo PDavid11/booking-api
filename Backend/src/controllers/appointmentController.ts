@@ -74,8 +74,8 @@ export class AppointmentController {
         }
     }
 
-    getAll(req: Request, res: Response) {
-        const result = this.appointmentController.getAll()
+    getActive(req: Request, res: Response) {
+        const result = this.appointmentController.getActive()
         if (!result.success) {
             res.status(404).json(result.reason)
         } else {

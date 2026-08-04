@@ -101,7 +101,7 @@ export class AppointmentService {
         return this.appointmentRepo.getByEmployeeID(ID)
     }
 
-    getAll(): {success: boolean, reason?: string, result?: Appointment[]} {
+    getActive(): {success: boolean, reason?: string, result?: Appointment[]} {
         const appointments = this.appointmentRepo.getAll()
         const activeAppointments = appointments.result?.filter(app => (app.Status !== "CANCELLED" && app.Status !== "REJECTED"))
         return {
