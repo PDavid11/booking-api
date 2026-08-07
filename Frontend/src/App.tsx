@@ -4,6 +4,8 @@ import BookingPage from './pages/BookingPage'
 import AdminPage from './pages/AdminPage'
 import AboutUsPage from './pages/AboutUsPage'
 import GalleryPage from './pages/GalleryPage'
+import LoginPage from './pages/LoginPage'
+import { ProtectedRoute } from './components/ProtectedRoute'
 
 
 function App() {
@@ -16,12 +18,18 @@ function App() {
 
           <Route path="/booking" element={<BookingPage />} />
 
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin" element={
+            <ProtectedRoute>
+              <AdminPage />
+            </ProtectedRoute>
+          } />
 
           <Route path="/about" element={<AboutUsPage />} />
 
           <Route path="/gallery" element={<GalleryPage />} />
           
+          <Route path="/login" element={<LoginPage />} />
+
         </Routes>
       </BrowserRouter>
     </div>

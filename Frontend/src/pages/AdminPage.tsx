@@ -7,9 +7,18 @@ import type { Appointment } from '../types/types'
 export default function AdminPage() {
 
 const [Appointments, setAppointments] = useState<AppointmentCard[]>([])
+const token = localStorage.getItem('token')
+            if (!token) {
+                alert('No token found. Please log in again.')
+                return
+            }
 
     const fetchAppointments = () => {
-        fetch('http://localhost:3000/appointments/status/PENDING')
+        fetch('http://localhost:3000/appointments/status/PENDING', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
             .then((res) => res.json())
             .then((data) => {
                 if (data.success && Array.isArray(data.result)) {
@@ -33,6 +42,7 @@ const [Appointments, setAppointments] = useState<AppointmentCard[]>([])
                 method: 'PATCH',
                 headers: {
                     'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({ id: id, status: newStatus})
             })

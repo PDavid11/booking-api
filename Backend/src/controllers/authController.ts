@@ -8,7 +8,7 @@ export class AuthController {
         this.authService = authService
     }
 
-    async login(req: Request, res: Response): Promise<void> {
+    async login(req: Request, res: Response): Promise<string | void> {
         try {
             const {username, psw} = req.body
 
