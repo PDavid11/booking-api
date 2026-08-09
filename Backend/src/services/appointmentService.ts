@@ -84,7 +84,9 @@ export class AppointmentService {
                 return {
                     ...app,
                     guestName: guest.result!.Name,
-                    phone: guest.result!.Phone
+                    phone: guest.result!.Phone,
+                    serviceName: this.serviceRepo.getByID(app.serviceID).result!.Name,
+                    employeeName: this.employeeRepo.getByID(app.employeeID).result!.Name
                 }
             }) ?? []
         )

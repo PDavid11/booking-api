@@ -4,7 +4,7 @@ import type { AppointmentCard } from '../types/types'
 import { useState, useEffect } from 'react'
 import type { Appointment } from '../types/types'
 
-export default function AdminPage() {
+export default function AppointmentsPage() {
 
 const [Appointments, setAppointments] = useState<AppointmentCard[]>([])
 const token = localStorage.getItem('token')
@@ -62,10 +62,7 @@ const token = localStorage.getItem('token')
 
     return (
         <div>
-            <Link to="/">
-                Back to Landing Page
-            </Link>
-            <h1>Admin Page</h1>
+            <h1>Appointments Page</h1>
             {!Appointments || !Array.isArray(Appointments) || Appointments.length === 0 ? (
                 <div className='empty-state'>
                     <p>There are currently no pending appointment.</p>

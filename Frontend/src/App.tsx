@@ -1,11 +1,15 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import LandingPage from './pages/LandingPage'
 import BookingPage from './pages/BookingPage'
-import AdminPage from './pages/AdminPage'
+import AppointmentsPage from './pages/AppointmentsPage'
 import AboutUsPage from './pages/AboutUsPage'
 import GalleryPage from './pages/GalleryPage'
 import LoginPage from './pages/LoginPage'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import { AdminLayout } from './components/AdminLayout'
+import { ServicePage } from './pages/ServicePage'
+import { EmployeePage } from './pages/employeePage'
+import { ConfirmedAppointmentsPage } from './pages/ConfirmedAppointmentsPage'
 
 
 function App() {
@@ -20,9 +24,16 @@ function App() {
 
           <Route path="/admin" element={
             <ProtectedRoute>
-              <AdminPage />
+              <AdminLayout />
             </ProtectedRoute>
-          } />
+          } >
+            <Route index element={<Navigate to="appointments" replace />}/>
+            <Route path="appointments" element={<AppointmentsPage />} />
+            <Route path="services" element={<ServicePage />} />
+            <Route path="employees" element={<EmployeePage />} />
+            <Route path="confirmedappointments" element={<ConfirmedAppointmentsPage />} />
+
+          </Route>
 
           <Route path="/about" element={<AboutUsPage />} />
 

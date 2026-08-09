@@ -5,8 +5,8 @@ export class Appointment {
 
     private id : string
     readonly guestID: string
-    private employeeID: string
-    private serviceID: string
+    readonly employeeID: string
+    readonly serviceID: string
     private startTime: Date
     private endTime: Date
     private status: AppointmentStatus
