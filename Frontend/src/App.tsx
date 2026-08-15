@@ -10,6 +10,7 @@ import { AdminLayout } from './components/AdminLayout'
 import { ServicePage } from './pages/ServicePage'
 import { EmployeePage } from './pages/employeePage'
 import { ConfirmedAppointmentsPage } from './pages/ConfirmedAppointmentsPage'
+import { PublicLayout } from './components/PublicLayout'
 
 
 function App() {
@@ -18,10 +19,12 @@ function App() {
       <BrowserRouter>
         <Routes>
           
-          <Route path="/" element={<LandingPage />} />
-
-          <Route path="/booking" element={<BookingPage />} />
-
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/booking" element={<BookingPage />} />
+            <Route path="/about" element={<AboutUsPage />} />
+            <Route path="/gallery" element={<GalleryPage />} />
+          </Route>
           <Route path="/admin" element={
             <ProtectedRoute>
               <AdminLayout />
@@ -35,10 +38,6 @@ function App() {
 
           </Route>
 
-          <Route path="/about" element={<AboutUsPage />} />
-
-          <Route path="/gallery" element={<GalleryPage />} />
-          
           <Route path="/login" element={<LoginPage />} />
 
         </Routes>

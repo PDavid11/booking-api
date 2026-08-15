@@ -99,7 +99,6 @@ function BookingPage () {
 
     return(
         <div className="Booking-Page">
-            <Link to="/">Back to Landing Page</Link>
             <h1>Book an Appointment</h1>
             <div className="Employee-dropdown">
                 <Dropdown
