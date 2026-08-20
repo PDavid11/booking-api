@@ -26,6 +26,8 @@ Built with **Node.js, TypeScript, and Express.js**, following a layered architec
 - TypeScript
 - Express.js
 - In-memory storage (no database yet)
+- React
+- Tailwind
 
 ---
 
