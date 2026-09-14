@@ -1,4 +1,4 @@
-import { AvailableSlotRepo } from '../repositories/AvailableSlotRepo.js';
+import { AvailableSlotRepo } from '../repositories/availableSlotRepo.js';
 import type { AvailableSlot } from '../models/AvailableSlot.js';
 
 export class AvailableSlotService {
@@ -10,12 +10,12 @@ export class AvailableSlotService {
     }
 
     getAll(): {success: boolean, reason?: string, result?: AvailableSlot[]} {
-        let result = this.availableSlotService.getAll()
+        const result = this.availableSlotService.getAll()
         return result
     }
 
     getByID(ID: string): {success: boolean, reason?: string, result?: AvailableSlot} {
-        let result = this.availableSlotService.getByID(ID)
+        const result = this.availableSlotService.getByID(ID)
         if (!result.success) {
             return {success: false, reason: result.reason!}
         } else {
@@ -36,7 +36,7 @@ export class AvailableSlotService {
     }
 
     delete(ID: string): {success: boolean, reason?: string} {
-        let result = this.availableSlotService.delete(ID)
+        const result = this.availableSlotService.delete(ID)
         if (!result.success) {
             return {success: false, reason: result.reason!}
         } else {

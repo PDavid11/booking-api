@@ -7,6 +7,7 @@ import GuestRoutes from "./routes/guestRoutes.js"
 import ServiceRoutes from "./routes/serviceRoutes.js"
 import AppointmentRoutes from "./routes/appointmentRoutes.js"
 import AuthRoutes from "./routes/authRoutes.js"
+import availableSlotRoutes from "./routes/availableSlotsRoutes.js"
 
 const app = express()
 const PORT = 3000
@@ -17,6 +18,7 @@ app.use('/guests', GuestRoutes)
 app.use('/services', ServiceRoutes)
 app.use('/appointments', AppointmentRoutes)
 app.use('/auth', AuthRoutes)
+app.use('/availableSlots', availableSlotRoutes)
 
 app.get("/health", (req, res) => {
     res.json({status: "ok"})
