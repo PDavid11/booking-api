@@ -27,8 +27,8 @@ export class AvailableSlotRepo {
         }
     }
 
-    add (employeeId: string, startTime: Date, endTime: Date, isBooked: boolean): {result: string} {
-        let newAvailableSlot = new AvailableSlot(employeeId, startTime, endTime, isBooked)
+    add (employeeId: string, startTime: Date, isBooked: boolean): {result: string} {
+        let newAvailableSlot = new AvailableSlot(employeeId, startTime, isBooked)
         this.availableSlot.push(newAvailableSlot)
         return {result : "slot added successfully"}
     }

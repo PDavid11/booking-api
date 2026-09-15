@@ -23,15 +23,12 @@ export class AvailableSlotService {
         }
     }
 
-    add(employeeId: string, startTime: Date, endTime: Date, isBooked: boolean) : {success: boolean, reason?: string} {
-        if (startTime >= endTime) {
-            return {success: false, reason: "Start time must be before end time"}
-        }
+    add(employeeId: string, startTime: Date, isBooked: boolean) : {success: boolean, reason?: string} {
         if (startTime < new Date()) {
             return {success: false, reason: "Start time must be in the future"}
         }
 
-        const result = this.availableSlotService.add(employeeId, startTime, endTime, isBooked)
+        const result = this.availableSlotService.add(employeeId, startTime, isBooked)
         return {success: true, reason: result.result}
     }
 

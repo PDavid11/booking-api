@@ -25,10 +25,9 @@ export class AvailableSlotController {
     }
 
     add(req: Request, res: Response) {
-        const {employeeId, startTime, endTime, isBooked} = req.body
+        const {employeeId, startTime, isBooked} = req.body
         const start = new Date(startTime)
-        const end = new Date(endTime)
-        const result = this.availableSlotController.add(employeeId, start, end, isBooked)
+        const result = this.availableSlotController.add(employeeId, start, isBooked)
         if (!result.success) {
             res.status(400).json(result.reason)
         } else {
