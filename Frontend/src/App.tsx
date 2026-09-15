@@ -11,6 +11,7 @@ import { ServicePage } from './pages/ServicePage'
 import { EmployeePage } from './pages/employeePage'
 import { ConfirmedAppointmentsPage } from './pages/ConfirmedAppointmentsPage'
 import { PublicLayout } from './components/PublicLayout'
+import { AddSlotPage } from './pages/addSlotPage'
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             </ProtectedRoute>
           } >
             <Route index element={<Navigate to="appointments" replace />}/>
+            <Route path="addslot" element={<AddSlotPage />} />
             <Route path="appointments" element={<AppointmentsPage />} />
             <Route path="services" element={<ServicePage />} />
             <Route path="employees" element={<EmployeePage />} />

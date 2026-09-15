@@ -19,6 +19,7 @@ export const AdminLayout: React.FC = () => {
                 <h1>Admin Dashboard</h1>
                 <nav>
                     <Link to="/admin/appointments">Pending Appointments</Link>
+                    <Link to="/admin/addslot">Add Slot</Link>
                     <Link to="/admin/confirmedAppointments">Confirmed Appointments</Link>
                     <Link to="/admin/services">Services</Link>
                     <Link to="/admin/employees">Employees</Link>

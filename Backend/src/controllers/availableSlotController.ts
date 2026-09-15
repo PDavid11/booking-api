@@ -36,7 +36,7 @@ export class AvailableSlotController {
     }
 
     delete(req: Request, res: Response) {
-        const id = req.params['id'] as string
+        const { id } = req.body
         const result = this.availableSlotController.delete(id)
         if (!result.success) {
             res.status(404).json(result.reason)
