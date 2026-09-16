@@ -32,3 +32,10 @@ export type AppointmentCard = {
     timeSlot: string
     status: string
 }
+
+export type AvailableSlot = {
+    id: string
+    employeeId: string
+    startTime: string
+    isBooked: boolean
+}

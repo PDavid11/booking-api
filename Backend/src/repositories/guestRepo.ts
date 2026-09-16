@@ -29,8 +29,8 @@ export class GuestRepo {
         }
     }
 
-    add(name: string, phone: string, gender: Gender): {result : Guest} {
-        let NewGuest = new Guest(name, phone, gender)
+    add(name: string, phone: string): {result : Guest} {
+        let NewGuest = new Guest(name, phone)
         this.guest.push(NewGuest)
         return {result : NewGuest}
     }

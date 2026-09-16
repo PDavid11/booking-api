@@ -6,8 +6,9 @@ const router = Router()
 
 router.get("/", (req, res) => availableSlotController.getAll(req, res))
 router.get("/:id", (req, res) => availableSlotController.getByID(req, res))
+router.patch("/", (req, res) => availableSlotController.modifySlot(req, res))
 
 router.post("/", authMiddleware, (req, res) => availableSlotController.add(req, res))
-router.delete("/:id", authMiddleware, (req, res) => availableSlotController.delete(req, res))
+router.delete("/", authMiddleware, (req, res) => availableSlotController.delete(req, res))
 
 export default router

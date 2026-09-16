@@ -1,5 +1,4 @@
 import { GuestRepo } from "../repositories/guestRepo.js";
-import { Gender } from "../enums/enums.js";
 import type { Guest } from "../models/Guest.js";
 
 export class GuestService {
@@ -19,10 +18,10 @@ export class GuestService {
         }
     }
 
-    add(name: string, phone: string, gender: Gender) : {result : Guest} {
+    add(name: string, phone: string) : {result : Guest} {
         let result = this.guestService.getByPhone(phone)
         if (!result.success) {
-            return this.guestService.add(name, phone, gender)
+            return this.guestService.add(name, phone)
         } else {
             return {result : result.result!}
         }

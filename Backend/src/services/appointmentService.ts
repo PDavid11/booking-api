@@ -58,8 +58,8 @@ export class AppointmentService {
         }
     }
 
-    add(name: string, phone: string, gender: Gender, employeeID: string, serviceID: string, startTime: string): {success: boolean, reason?: string} {
-        let guest = this.guestService.add(name, phone, gender)
+    add(name: string, phone: string, employeeID: string, serviceID: string, startTime: string): {success: boolean, reason?: string} {
+        let guest = this.guestService.add(name, phone)
         const duration = this.serviceRepo.getByID(serviceID).result!.DurationMinutes
         const startDate = new Date(startTime)
         const endTime = new Date(startDate.getTime() + duration * 60000)

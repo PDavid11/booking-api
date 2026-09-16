@@ -40,4 +40,13 @@ export class AvailableSlotService {
             return {success: true, reason: result.reason!}
         }
     }
+
+    modifySlot(ID: string, isBooked: boolean): {success: boolean, reason?: string} {
+        const result = this.availableSlotService.modifySlot(ID, isBooked)
+        if (!result.success) {
+            return {success: false, reason: result.reason!}
+        } else {
+            return {success: true, reason: result.reason!}
+        }
+    }
 }

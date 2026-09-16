@@ -1,4 +1,3 @@
-import {TIME_SLOTS} from "../constants/timeSlots";
 import type { Service, Appointment } from "../types/types";
 
 

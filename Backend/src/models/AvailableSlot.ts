@@ -4,7 +4,7 @@ export class AvailableSlot {
     private id: string
     private employeeId: string
     private startTime: Date
-    private isBooked: boolean
+    public isBooked: boolean
 
     constructor(employeeId: string, startTime: Date, isBooked: boolean = false, id ?: string) {
         this.id = id || uuid()

@@ -11,8 +11,8 @@ export class AppointmentController {
     }
 
     add(req: Request, res: Response) {
-        const {name, phone, gender, serviceID, employeeID, startTime} = req.body
-        const result = this.appointmentController.add(name, phone, gender, employeeID, serviceID, startTime)
+        const {name, phone, serviceID, employeeID, startTime} = req.body
+        const result = this.appointmentController.add(name, phone, employeeID, serviceID, startTime)
         res.status(201).json(result)
     }
 

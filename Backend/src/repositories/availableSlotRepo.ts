@@ -14,6 +14,7 @@ export class AvailableSlotRepo {
         if (this.availableSlot.length < 1) {
             return {success: false, reason: "Not found"}
         } else {
+            this.AvailableSlot.filter(slot => slot.IsBooked === false)
             return {success: true, result: this.availableSlot}
         }
     }
@@ -41,5 +42,14 @@ export class AvailableSlotRepo {
             this.availableSlot.splice(index, 1)
             return {success: true, reason: "Slot deleted successfully"}
         }
+    }
+
+    modifySlot(ID: string, isBooked: boolean): {success: boolean, reason?: string} {
+        let slot = this.availableSlot.find(s => s.ID === ID)
+        if (!slot) {
+            return {success: false, reason: "Slot not found"}
+        }
+        slot.isBooked = isBooked
+        return {success: true, reason: "Slot modified successfully"}
     }
 }

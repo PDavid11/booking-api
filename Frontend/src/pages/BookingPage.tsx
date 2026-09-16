@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import type { Employee, Service, Appointment } from "../types/types";
 import Dropdown from "../components/Dropdown";
-import { TIME_SLOTS } from "../constants/timeSlots";
 import CalendarButton from "../components/CalendarButton";
 import Button from "../components/Button";
-import { checkIsSlotAvailable } from "../utils/bookingUtils";
+import type { AvailableSlot } from "../types/types";
 import { Link } from "react-router-dom";
 
 function BookingPage () {
@@ -13,21 +12,25 @@ function BookingPage () {
     const [selectedEmployee, setSelectedEmployee] = useState<string>("")
     const [selectedService, setSelectedService] = useState<string>("")
     const [appointments, setAppointments] = useState<Appointment[]>([])
-    const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
+    const [selectedSlot, setSelectedSlot] = useState<AvailableSlot | null>(null)
     const [selectedDate, setSelectedDate] = useState<string>("")
     const [existingAppointments, setExistingAppointments] = useState<Appointment[]>([])
     const [phoneNumber, setPhoneNumber] = useState<string>("")
-    const [gender, setGender] = useState<string>("")
     const [customerName, setCustomerName] = useState<string>("")
+    const [availableSlots, setAvailableSlots] = useState<AvailableSlot[]>([])
 
     useEffect(() => {
         fetch("http://localhost:3000/employees")
             .then(res => res.json())
-            .then(data => setEmployees(data.result))
+            .then(data => setEmployees(data.result || []))
 
         fetch("http://localhost:3000/services")
             .then(res => res.json())
-            .then(data => setServices(data.result))
+            .then(data => setServices(data.result || []))
+
+        fetch("http://localhost:3000/availableSlots")
+            .then(res => res.json())
+            .then(data => setAvailableSlots(data.result || []))
     }, [])
 
     useEffect(() => {
@@ -48,18 +51,15 @@ function BookingPage () {
     }, [selectedEmployee, selectedDate])
 
     const handleBooking = async () => {
-        if (!selectedEmployee || !selectedService || !selectedSlot || !selectedDate || !phoneNumber || !gender || !customerName) {
-            alert("Please select an employee, service, date, time slot, phone number, gender, and customer name before booking.");
+        if (!selectedEmployee || !selectedService || !selectedSlot || !phoneNumber || !customerName) {
+            alert("Please select an employee, service, date, time slot, phone number, and customer name before booking.");
             return;
         }
 
-        const startTime = `${selectedDate}T${selectedSlot}:00`
-
         const newAppointment = {
-            gender: gender,
             employeeID: selectedEmployee,
             serviceID: selectedService,
-            startTime: startTime,
+            startTime: selectedSlot.startTime,
             name: customerName,
             phone: phoneNumber
         }
@@ -72,13 +72,21 @@ function BookingPage () {
                 },
                 body: JSON.stringify(newAppointment)
             })
+            await fetch("http://localhost:3000/availableSlots", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id: selectedSlot.id, isBooked: "true" })
+            })
+
 
             if (response.ok) {
                 alert("Appointment booked successfully!(Wait for confirmation.)")
+                selectedSlot.isBooked = true
                 setSelectedSlot(null)
                 setCustomerName("")
                 setPhoneNumber("")
-                setGender("")
                 setSelectedDate("")
                 fetch("http://localhost:3000/appointments")
                     .then(res => res.json())
@@ -114,22 +122,6 @@ function BookingPage () {
                     onSelect={(id) => setSelectedService(id)}
                     />
             </div>
-            <div className="Gender-select">
-                <select value={gender} onChange={(e) => setGender(e.target.value)}>
-                    <option value="">-- Choose --</option>
-                    <option value="MALE">MALE</option>
-                    <option value="FEMALE">FEMALE</option>
-                </select>
-            </div>
-            <div className="date-picker-container">
-                <label htmlFor="booking-date">Pick a date:</label>
-                <input
-                    id="booking-date"
-                    type="date"
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                />
-            </div>
             <div>
                 <input 
                     type="tel"
@@ -140,23 +132,46 @@ function BookingPage () {
             </div>
             <div>
                 <h3>Select a time:</h3>
-                <h3>Selected time: {selectedSlot}</h3>
+                <h3>Selected time: {selectedSlot ? new Date(selectedSlot.startTime).toLocaleString('hu-HU', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                }) : "None"}
+                </h3>
+
                 <div className="time-slot-grid">
-                    {TIME_SLOTS.map((slot) => (
-                        <CalendarButton
-                            key={slot}
-                            time={slot}
-                            isAvailable={checkIsSlotAvailable({
-                                slotTime: slot,
-                                selectedEmployee,
-                                selectedService,
-                                selectedDate,
-                                services,
-                                existingAppointments
-                            })}
-                            onClick={(time) => setSelectedSlot(time)}
-                        />
-                    ))}
+                    {availableSlots.length === 0 ? (
+                        <p>No available slots found.</p>
+                    ) : (
+                        availableSlots
+                            .filter((slot) => !slot.isBooked)
+                            .map((slot) => {
+                                const formattedTime = new Date(slot.startTime).toLocaleString('hu-HU', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: false
+                                })
+                                const isSlotAvailable = !slot.isBooked
+
+                                return (
+                                    <CalendarButton
+                                        key={slot.id}
+                                        time={formattedTime}
+                                        isAvailable={isSlotAvailable}
+                                        isSelected={selectedSlot?.id === slot.id}
+                                        onClick={() => {
+                                            if (isSlotAvailable) {
+                                         setSelectedSlot(slot)
+                                            }
+                                        }}
+                                    />
+                                )
+                            })
+                    )}
                 </div>
                 <div className="Costumer-name">
                     <input

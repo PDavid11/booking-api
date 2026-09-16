@@ -37,8 +37,8 @@ const token = localStorage.getItem('token')
         fetchAppointments()
     }, [])
 
-        const handleStatusChange = (id: string, newStatus: 'CONFIRMED' | 'CANCELLED' | 'REJECTED') => {
-            fetch(`http://localhost:3000/appointments`, {
+        const handleStatusChange = async (id: string, newStatus: 'CONFIRMED' | 'CANCELLED' | 'REJECTED') => {
+            await fetch(`http://localhost:3000/appointments`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type' : 'application/json',

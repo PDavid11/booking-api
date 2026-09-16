@@ -1,20 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Dropdown from "../components/Dropdown"
-
-interface Employee {
-    id: string
-    name: string
-    phone: string
-    instagram: string
-    role: string
-}
-
-interface AvailableSlot {
-    id: string
-    employeeId: string
-    startTime: Date
-    isBooked: boolean
-}
+import type { Employee, AvailableSlot } from "../types/types"
 
 export const AddSlotPage: React.FC = () => {
     const [availableSlots, setAvailableSlots] = useState<AvailableSlot[]>([])
