@@ -37,14 +37,15 @@ const token = localStorage.getItem('token')
         fetchAppointments()
     }, [])
 
-        const handleStatusChange = async (id: string, newStatus: 'CONFIRMED' | 'CANCELLED' | 'REJECTED') => {
-            await fetch(`http://localhost:3000/appointments`, {
+    const handleStatusChange = async (id: string, slotID: string, newStatus: 'CONFIRMED' | 'CANCELLED' | 'REJECTED') => {
+        if (newStatus === 'CANCELLED' || newStatus === 'REJECTED') {
+            console.log(slotID)
+            await fetch(`http://localhost:3000/availableSlots`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type' : 'application/json',
-                    'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ id: id, status: newStatus})
+                body: JSON.stringify({ id: slotID, isBooked: "false" })
             })
             .then((res) => res.json())
             .then((data) => {
@@ -57,8 +58,29 @@ const token = localStorage.getItem('token')
             .then(() => {
                 fetchAppointments()
             })
-            .catch((err) => console.error('PATCH request error:', err))
+            .catch((err) => console.log('PATCH request error:', err))
         }
+        await fetch(`http://localhost:3000/appointments`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type' : 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ id: id, status: newStatus})
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.success) {
+                setAppointments((prev) => prev.filter((app) => app.id))
+            } else {
+                alert('Status change error!')
+            }
+        })
+        .then(() => {
+            fetchAppointments()
+        })
+        .catch((err) => console.error('PATCH request error:', err))
+    }
 
     return (
         <div>
@@ -74,9 +96,12 @@ const token = localStorage.getItem('token')
                     <div>
                         {Appointments.map((app) => (
                             <AdminCard key={app.id} appointment={app}
-                            onConfirm={(id) => handleStatusChange(id, 'CONFIRMED')}
-                            onCancel={(id) => handleStatusChange(id, 'CANCELLED')} 
+                            onConfirm={(id) => handleStatusChange(id, app.slotID, 'CONFIRMED')}
+                            onCancel={(id) => handleStatusChange(id, app.slotID, 'CANCELLED')} 
                             />
+                        ))}
+                        {Appointments.map((app) => (
+                            <p>{app.slotID}</p>
                         ))}
                     </div>
                 </div>

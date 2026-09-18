@@ -4,7 +4,6 @@ import Dropdown from "../components/Dropdown";
 import CalendarButton from "../components/CalendarButton";
 import Button from "../components/Button";
 import type { AvailableSlot } from "../types/types";
-import { Link } from "react-router-dom";
 
 function BookingPage () {
     const [employees, setEmployees] = useState<Employee[]>([])
@@ -60,6 +59,7 @@ function BookingPage () {
             employeeID: selectedEmployee,
             serviceID: selectedService,
             startTime: selectedSlot.startTime,
+            slotID: selectedSlot.id,
             name: customerName,
             phone: phoneNumber
         }

@@ -58,7 +58,7 @@ export class AppointmentService {
         }
     }
 
-    add(name: string, phone: string, employeeID: string, serviceID: string, startTime: string): {success: boolean, reason?: string} {
+    add(name: string, phone: string, employeeID: string, serviceID: string, slotID: string, startTime: string): {success: boolean, reason?: string} {
         let guest = this.guestService.add(name, phone)
         const duration = this.serviceRepo.getByID(serviceID).result!.DurationMinutes
         const startDate = new Date(startTime)
@@ -68,7 +68,7 @@ export class AppointmentService {
         } else if (!this.serviceRepo.getByID(serviceID).success) {
             return {success: false, reason: "Service not found"}
         } else {
-             return this.appointmentRepo.add(guest.result.ID, serviceID, employeeID, startDate, endTime)
+             return this.appointmentRepo.add(guest.result.ID, serviceID, employeeID, slotID, startDate, endTime,)
         }
     }
 

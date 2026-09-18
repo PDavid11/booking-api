@@ -28,6 +28,7 @@ export type AppointmentCard = {
     id: string
     guestName: string
     phone: string
+    slotID: string
     startTime: string
     timeSlot: string
     status: string

@@ -108,7 +108,7 @@ export class AppointmentRepo {
         }
     }
 
-    add(guestID: string, serviceID: string, employeeID: string, startTime: Date, endTime: Date): {success: boolean, reason?: string} {
+    add(guestID: string, serviceID: string, employeeID: string, slotID: string, startTime: Date, endTime: Date): {success: boolean, reason?: string} {
         let results : Appointment[] = []
         for (let i of this.appointment) {
             if (!(startTime >= i.EndTime || endTime <= i.StartTime) && employeeID === i.EmployeeID && i.Status !== AppointmentStatus.CANCELLED && i.Status !== AppointmentStatus.REJECTED) {
@@ -118,7 +118,7 @@ export class AppointmentRepo {
         if (results.length > 0) {
             return {success: false, reason: "Appointment conflict"}
         } else {
-            this.appointment.push(new Appointment(guestID, serviceID, employeeID, startTime, endTime))
+            this.appointment.push(new Appointment(guestID, serviceID, employeeID, startTime, endTime, slotID))
             return {success: true}
         }
     }
