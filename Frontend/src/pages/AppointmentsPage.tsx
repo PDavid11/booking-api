@@ -100,9 +100,6 @@ const token = localStorage.getItem('token')
                             onCancel={(id) => handleStatusChange(id, app.slotID, 'CANCELLED')} 
                             />
                         ))}
-                        {Appointments.map((app) => (
-                            <p>{app.slotID}</p>
-                        ))}
                     </div>
                 </div>
             )}

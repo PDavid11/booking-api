@@ -1,0 +1,39 @@
+{
+  "title": "HÁZIREND",
+  "generalRules": [
+    "Kérlek, az időpontodra egyedül érkezz, lehetőleg maximum 5 perccel korábban.",
+    "Amennyiben sminkben érkezel, kérlek, számolj vele, hogy a smink eltávolítása a saját szolgáltatási idődből történik.",
+    "Időpontfoglalás előtt kérlek, nézd át a munkáimat, hogy a választott stílus megfeleljen az elképzeléseidnek és a saját pilláid adottságainak.",
+    "A választott hosszúságot minden esetben a természetes pilláid állapotához igazítom. A saját pilláid egészsége mindig elsődleges szempont.",
+    "Ha nem vagy biztos benne, mennyi időt érdemes szánnod az alkalomra, kérdezz rá már az időpont egyeztetésekor.",
+    "Egy új szett elkészítése átlagosan 2,5-3 óra.",
+    "Egy töltés elkészítése átlagosan 1,5-2 óra.",
+    "Ha töltésre érkezel, kérlek, előre jelezd, ha az előző szetted a megszokottnál kevésbé volt tartós, sok szál kihullott, összetapadt vagy sérült, illetve ha sokat dörzsölted a szemed vagy sminkelted a pillákat.",
+    "Töltés csak megfelelő mennyiségű és állapotú megmaradt szál esetén lehetséges. Ha az eltávolítás és előkészítés után a szett kevesebb mint körülbelül 30%-a marad meg, új szett készítése szükséges.",
+    "Más stylist munkáját nem minden esetben tudom tölteni. Ilyenkor a meglévő szett eltávolítása után új szettet készítek.",
+    "4 hétnél régebbi szett esetén minden esetben új szett készítése szükséges.",
+    "Kontaktlencse viselése esetén kérlek, a szolgáltatás idejére távolítsd el.",
+    "Ha betegnek érzed magad, lázas vagy, erősen köhögsz, náthás vagy fáj a torkod, kérlek, jelezd előre, és egyeztessünk egy új időpontot."
+  ],
+  "cleaningSection": {
+    "title": "SZEMPILLA TISZTÍTÁS",
+    "rules": [
+      "Az elkészült szettet az első 24 órában lehetőleg ne érje nagy mennyiségű víz, gőz vagy pára. (UV technológia kivétel)",
+      "A 24 óra elteltével a szempillák rendszeres és alapos tisztítása elengedhetetlen.",
+      "A víz önmagában nem távolítja el megfelelően a sminket, faggyút, port és egyéb szennyeződéseket a pillák közül.",
+      "A szennyeződések felhalmozódása összetaszthatja a pillákat, ami a saját pillákra is plusz terhelést jelenthet.",
+      "A nem megfelelő tisztítás miatt irritáció vagy kellemetlenség is kialakulhat.",
+      "A szempillák tisztításához használj olajmentes szempillasampont vagy olajmentes, erre alkalmas lemosót.",
+      "A tisztítás során mindig gyengéden bánj a pillákkal, ne dörzsöld és ne húzogasd őket.",
+      "Ne tépkedd és ne próbáld otthon eltávolítani a műszempillákat.",
+      "Szempillaspirál használata nem javasolt.",
+      "Szempillagöndörítő használata tilos, mert sérítheti a természetes és a műszempillákat is.",
+      "Lehetőleg kerüld az erős vagy olajos sminktermékeket a szemkörnyéken, mivel ezek nehezebben távolíthatók el.",
+      "Vattakorong használatát lehetőleg mellőzd, mert a szálai könnyen beleakadhatnak a műszempillába.",
+      "A szempillák tisztítása után a vizet finoman itasd fel, lehetőleg puha papírtörlővel.",
+      "A pillákat csak teljesen száraz állapotban fésüld át, tiszta spirálkefével.",
+      "A megfelelő otthoni ápolás segít abban, hogy a szett tovább maradjon szép, rendezett és tartós, miközben a saját pilláid egészségét is megőrzöd."
+    ]
+  },
+  "author": "KATALIN KLÁRA"
+}

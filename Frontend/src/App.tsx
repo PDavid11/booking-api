@@ -12,6 +12,7 @@ import { EmployeePage } from './pages/employeePage'
 import { ConfirmedAppointmentsPage } from './pages/ConfirmedAppointmentsPage'
 import { PublicLayout } from './components/PublicLayout'
 import { AddSlotPage } from './pages/addSlotPage'
+import { HouseRulesPage } from './pages/HouseRulesPage'
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="/booking" element={<BookingPage />} />
             <Route path="/about" element={<AboutUsPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
+            <Route path="/house-rules" element={<HouseRulesPage />} />
           </Route>
           <Route path="/admin" element={
             <ProtectedRoute>

@@ -26,6 +26,17 @@ export default function LandingPage() {
                     Gallery
                 </Link>
             </div>
+            <p>.   </p>
+            <p> .  </p>
+            <p>  . </p>
+            <p>   .</p>
+            <p>.   </p>
+            <p>.   </p>
+            <p>.   </p>
+            <p>.   </p>
+            <p>.   </p>
+            <p>.   </p>
+            <p>.   </p>
         </div>
     )
 }

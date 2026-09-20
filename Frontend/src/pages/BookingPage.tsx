@@ -189,6 +189,14 @@ function BookingPage () {
                     />
                 </div>
             </div>
+            <p>.   </p>
+            <p> .  </p>
+            <p>  . </p>
+            <p>   .</p>
+            <p>.   </p>
+            <p>.   </p>
+            <p>.   </p>
+            <p>.   </p>
         </div>
     )
 }
