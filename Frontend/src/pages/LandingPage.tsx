@@ -6,12 +6,12 @@ export default function LandingPage() {
             <h1>Landing Page</h1>
 
             <Link to="/booking" className="btn-primary">
-                BookingPage
+                Booking Page
             </Link>
 
             <div>
                 <Link to="/admin" className="btn-primary">
-                    AdminPage
+                    Admin Page
                 </Link>
             </div> 
 
@@ -26,17 +26,6 @@ export default function LandingPage() {
                     Gallery
                 </Link>
             </div>
-            <p>.   </p>
-            <p> .  </p>
-            <p>  . </p>
-            <p>   .</p>
-            <p>.   </p>
-            <p>.   </p>
-            <p>.   </p>
-            <p>.   </p>
-            <p>.   </p>
-            <p>.   </p>
-            <p>.   </p>
         </div>
     )
 }

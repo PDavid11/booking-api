@@ -2,9 +2,7 @@ import Button from './Button'
 import type { AppointmentCard } from '../types/types'
 
 interface AdminCardProps {
-    
     appointment: AppointmentCard
-
     onConfirm?: (id: string) => void
     onCancel?: (id: string) => void
 }
@@ -12,12 +10,10 @@ interface AdminCardProps {
 export default function AdminCard({ appointment, onConfirm, onCancel }: AdminCardProps) {
 
     const formateDateAndTime = (isoString: string) => {
-
         if (!isoString) return { date: '', time: '' }
 
         const dateObj = new Date(isoString)
         const date = dateObj.toLocaleDateString('hu-HU')
-
         const time = dateObj.toLocaleTimeString('hu-HU', {
             hour: '2-digit',
             minute: '2-digit'
@@ -28,24 +24,25 @@ export default function AdminCard({ appointment, onConfirm, onCancel }: AdminCar
 
     const { date, time } = formateDateAndTime(appointment.startTime)
 
-
     return (
-        <div>
+        <div className="admin-card">
             <h3>{appointment.guestName}</h3>
-            <p>Date: {date} - Time: {time}</p>
-            <p>Phone: {appointment.phone}</p>
-            <p>Status: {appointment.status}</p>
+            <p><strong>Dátum:</strong> {date} - {time}</p>
+            <p><strong>Telefon:</strong> {appointment.phone}</p>
+            <p><strong>Státusz:</strong> {appointment.status}</p>
 
-            <Button
-                text="Confirm"
-                color="green"
-                onClick={() => (alert(`Confirmed : ${appointment.guestName}`), onConfirm && onConfirm(appointment.id))}
+            <div className="admin-card-actions">
+                <Button
+                    text="Confirm"
+                    color="#4caf50"
+                    onClick={() => (alert(`Confirmed : ${appointment.guestName}`), onConfirm && onConfirm(appointment.id))}
                 />
-            <Button
-                text="Cancel"
-                color="red"
-                onClick={() => (alert(`Cancelled : ${appointment.guestName}`), onCancel && onCancel(appointment.id))}
+                <Button
+                    text="Cancel"
+                    color="#e53935"
+                    onClick={() => (alert(`Cancelled : ${appointment.guestName}`), onCancel && onCancel(appointment.id))}
                 />
+            </div>
         </div>
     )
 }

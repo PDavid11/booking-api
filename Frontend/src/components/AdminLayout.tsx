@@ -1,3 +1,4 @@
+//import '../styles/Layouts.css'
 import React from "react"
 import {useNavigate, Link, Outlet} from "react-router-dom"
 

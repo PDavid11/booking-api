@@ -1,3 +1,4 @@
+//import '../styles/Layouts.css'
 import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
 
@@ -5,9 +6,6 @@ export const PublicLayout: React.FC = () => {
     return (
         <div>
             <header>
-                <div>
-                    <h2>Header</h2>
-                </div>
 
                 <nav>
                     <Link to="/">Home</Link>
@@ -30,7 +28,7 @@ export const PublicLayout: React.FC = () => {
                     </div>
 
                     <div className="footer-social">
-                    <h3>Kövess minket</h3>
+                    <h3>Közösségi oldalaim</h3>
                     <ul>
                         <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a></li>
                         <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a></li>
