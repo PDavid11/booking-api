@@ -17,7 +17,7 @@ import { HouseRulesPage } from './pages/HouseRulesPage'
 
 function App() {
   return (
-    <div>
+    <div className="min-h-[100dvh] bg-canvas text-ink">
       <BrowserRouter>
         <Routes>
           
