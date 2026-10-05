@@ -58,6 +58,15 @@ export class AppointmentService {
         }
     }
 
+    deleteAppointment(ID: string): {success: boolean, reason?: string} {
+        const result = this.appointmentRepo.getByID(ID)
+        if (!result.success) {
+            return {success: false, reason: result.reason!}
+        } else {
+            return this.appointmentRepo.delete(ID)
+        }
+    } 
+
     add(name: string, phone: string, employeeID: string, serviceID: string, slotID: string, startTime: string): {success: boolean, reason?: string} {
         let guest = this.guestService.add(name, phone)
         const duration = this.serviceRepo.getByID(serviceID).result!.DurationMinutes

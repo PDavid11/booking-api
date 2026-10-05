@@ -12,5 +12,6 @@ router.get("/:id", authMiddleware, (req, res) => appointmentController.getByID(r
 router.get("/status/:status", authMiddleware, (req, res) => appointmentController.getByStatus(req, res))
 router.get("/employee/:employeeID", authMiddleware, (req, res) => appointmentController.getByEmployeeID(req, res))
 router.patch("/", authMiddleware, (req, res) => appointmentController.modifyStatus(req, res))
+router.delete("/", authMiddleware, (req, res) => appointmentController.delete(req, res))
 
 export default router

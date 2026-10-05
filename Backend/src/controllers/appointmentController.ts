@@ -16,6 +16,16 @@ export class AppointmentController {
         res.status(201).json(result)
     }
 
+    delete(req: Request, res: Response) {
+        const {id} = req.body
+        const result = this.appointmentController.deleteAppointment(id)
+        if (!result.success) {
+            res.status(500).json(result.reason)
+        } else {
+            res.status(200).json({success: true})
+        }
+    }
+
     modifyStatus(req: Request, res: Response) {
         const {id, status} = req.body
         if (status === "CONFIRMED") {

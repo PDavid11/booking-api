@@ -123,7 +123,7 @@ function BookingPage () {
                     />
             </div>
             <div>
-                <input 
+                <input className="Phone-number"
                     type="tel"
                     placeholder="Enter phone number"
                     value={phoneNumber}
@@ -184,19 +184,11 @@ function BookingPage () {
                 <div>
                     <Button
                         text="Book Appointment"
-                        color="blue"
+                        color="#d4a373"
                         onClick={() => {handleBooking()}}
                     />
                 </div>
             </div>
-            <p>.   </p>
-            <p> .  </p>
-            <p>  . </p>
-            <p>   .</p>
-            <p>.   </p>
-            <p>.   </p>
-            <p>.   </p>
-            <p>.   </p>
         </div>
     )
 }

@@ -50,6 +50,25 @@ export const ConfirmedAppointmentsPage: React.FC = () => {
         }
     }
 
+    const handleDeleteAppointment = async (ID: string) => {
+        try {
+            const response = await fetch('http://localhost:3000/appointments', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ id: ID })
+            })
+            if (!response.ok) {
+                throw new Error('Failed to delete appointment')
+            }
+            fetchConfirmedAppointments()
+        } catch (err: any) {
+            setError(err.message)
+        }
+    }
+
     useEffect(() => {
         fetchConfirmedAppointments()
     }, [])
@@ -70,7 +89,9 @@ export const ConfirmedAppointmentsPage: React.FC = () => {
                             <p><strong>Employee Name:</strong> {appointment.employeeName}</p>
                             <p><strong>Date:</strong> {formatDate(appointment.startTime)}</p>
                             <p><strong>Start Time:</strong> {formatTime(appointment.startTime)}</p>
+                            <button onClick={() => handleDeleteAppointment(appointment.id)}>Delete</button>
                         </li>
+                        
                     ))}
                 </ul>
             )}
