@@ -4,18 +4,18 @@
 @theme {
   --font-sans: "Outfit Variable", "Segoe UI", sans-serif;
 
-  --color-canvas: #eef1f4;
-  --color-ink: #1c242c;
-  --color-muted: #5a6570;
-  --color-line: #d5dbe2;
+  --color-canvas: #f7f4ee;
+  --color-ink: #2b2521;
+  --color-muted: #6e645e;
+  --color-line: #e4dcd3;
   --color-surface: #ffffff;
-  --color-accent: #b23a4a;
-  --color-accent-hover: #962f3d;
-  --color-accent-soft: #f6e8ea;
+  --color-accent: #a87c51;
+  --color-accent-hover: #8f663d;
+  --color-accent-soft: #f2e9e1;
 
   --radius-box: 12px;
 
-  --shadow-soft: 0 8px 28px rgb(28 36 44 / 0.08);
+  --shadow-soft: 0 8px 28px rgb(43 37 33 / 0.08);
 }
 
 @layer base {

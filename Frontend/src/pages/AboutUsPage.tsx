@@ -1,25 +1,23 @@
 import { Link } from "react-router-dom";
 import { FadeIn } from "../components/FadeIn";
+import AboutMeData from "../constants/AboutMeData.json";
 
 export default function AboutUsPage() {
   return (
     <div className="mx-auto grid max-w-7xl items-start gap-10 px-4 py-12 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:py-16">
       <FadeIn>
         <img
-          src="/images/about-portrait.jpg"
+          src="/images/about-portrait.png"
           alt="Katalin Klára a stúdióban"
           className="w-full rounded-[12px] object-cover"
         />
       </FadeIn>
       <FadeIn>
-        <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">About Me</h1>
+        <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">Vastag Katalin Klára</h1>
         <p className="mt-6 max-w-[58ch] text-muted">
-          Katalin Klára vagyok. Szempillát készítek úgy, hogy a saját pilláid egészsége mindig elsődleges
-          szempont maradjon.
-        </p>
-        <p className="mt-4 max-w-[58ch] text-muted">
-          A hosszúságot a természetes pilláid állapotához igazítom. Ha nem vagy biztos az időkeretben,
-          kérdezz rá már az egyeztetéskor.
+          {AboutMeData.text.map((text, index) => (
+            <p key={index}>{text}</p>
+          ))}
         </p>
         <Link
           to="/booking"

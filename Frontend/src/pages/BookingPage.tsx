@@ -110,7 +110,7 @@ function BookingPage() {
     <div className="mx-auto max-w-3xl px-4 py-12">
       <h1 className="text-4xl font-semibold tracking-tight">Book an Appointment</h1>
       <p className="mt-3 max-w-[55ch] text-muted">
-        Válassz stylistot, szolgáltatást és szabad időpontot. A foglalás után megerősítésre vár.
+        Válassz szolgáltatást és szabad időpontot. A foglalás után megerősítésre vár.
       </p>
 
       <div className="mt-8 flex flex-col gap-6 rounded-[12px] border border-line bg-surface p-6 md:p-8">

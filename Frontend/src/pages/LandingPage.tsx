@@ -41,16 +41,16 @@ export default function LandingPage() {
             </li>
             <li className="md:mt-8">
               <p className="text-3xl font-semibold text-accent">02</p>
-              <p className="mt-3 text-lg font-semibold">Foglalj időt</p>
+              <p className="mt-3 text-lg font-semibold">Foglalj időpontot</p>
               <p className="mt-2 max-w-[36ch] text-sm text-muted">
-                Válassz stylistot, szabad sávot, és add meg a nevedet és telefonszámodat.
+                Válassz időpontot, add meg a neved és telefonszámod.
               </p>
             </li>
-            <li className="rounded-[12px] bg-accent p-6 text-white md:mt-16">
+            <li className="rounded-[12px] bg-accent p-6 text-white">
               <p className="text-3xl font-semibold">03</p>
               <p className="mt-3 text-lg font-semibold">Gyere nyugodtan</p>
               <p className="mt-2 max-w-[36ch] text-sm text-white/80">
-                Érkezz egyedül, maximum 5 perccel korábban. A többit a stúdióban intézzük.
+                Érkezz egyedül, legalább 5 perccel korábban. A többit a stúdióban intézzük.
               </p>
             </li>
           </ol>
@@ -65,7 +65,7 @@ export default function LandingPage() {
             className="h-[380px] w-full rounded-[12px] object-cover md:h-[460px]"
           />
           <h2 className="mt-8 max-w-[20ch] text-3xl font-semibold tracking-tight">
-            Új szett 2,5 to 3 óra. Töltés 1,5 to 2 óra.
+            Új szett 3 óra alatt. Töltés 2 óra alatt.
           </h2>
           <p className="mt-3 max-w-[55ch] text-muted">
             Olvasd el a házirendet foglalás előtt, hogy a választott stílus és az időkeret is stimmeljen.
