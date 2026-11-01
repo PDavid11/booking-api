@@ -8,6 +8,7 @@ import ServiceRoutes from "./routes/serviceRoutes.js"
 import AppointmentRoutes from "./routes/appointmentRoutes.js"
 import AuthRoutes from "./routes/authRoutes.js"
 import availableSlotRoutes from "./routes/availableSlotsRoutes.js"
+import pool from "./db.js"
 
 const app = express()
 const PORT = 3000
@@ -28,6 +29,10 @@ app.get("/", (req, res) => {
     res.send("run")
 })
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+
     console.log(`server on http://localhost:${PORT}`)
+
+    const res = await pool.query('SELECT * FROM manual_test')
+    console.log(res.rows)
 })
