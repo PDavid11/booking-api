@@ -25,7 +25,7 @@ Built with **Node.js, TypeScript, and Express.js**, following a layered architec
 - Node.js
 - TypeScript
 - Express.js
-- In-memory storage (no database yet)
+- PostgreSQL
 - React
 - Tailwind
 
@@ -49,6 +49,7 @@ The project is structured into multiple layers:
 - **Guest** – clients booking appointments
 - **Service** – available services with duration and price
 - **Appointment** – booking connecting guest, employee, and service
+- **AvailableSlots** - staff members can open slots for costumers
 
 ---
 
