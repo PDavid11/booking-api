@@ -10,31 +10,31 @@ export class EmployeeService {
         this.employeeService = employeeService
     }
     
-    getAll(): {result : Employee[]} {
-        return {result: this.employeeService.Employee}
+    async getAll(): Promise<{result : Employee[]}> {
+        return {result: await this.employeeService.Employee}
     }
 
-    add(name: string, phone: string, instagram: string, role: EmployeeRole) {
-        return this.employeeService.add(name, phone, instagram, role)
+    async add(name: string, phone: string, instagram: string, role: EmployeeRole): Promise<{result: Employee}> {
+        return await this.employeeService.add(name, phone, instagram, role)
     }
 
-    delete(ID: string):{success: boolean, reason?: string} {
-        return this.employeeService.delete(ID)
+    async delete(ID: string): Promise<{success: boolean, reason?: string}> {
+        return await this.employeeService.delete(ID)
     }
 
-    modifyName(ID: string, newName: string): {success: boolean, reason?: string} {
-        return this.employeeService.modifyName(ID, newName)
+    async modifyName(ID: string, newName: string): Promise<{success: boolean, reason?: string}> {
+        return await this.employeeService.modifyName(ID, newName)
     }
 
-    modifyPhone(ID: string, newPhone: string): {success: boolean, reason?: string} {
-        return this.employeeService.modifyPhone(ID, newPhone)
+    async modifyPhone(ID: string, newPhone: string): Promise<{success: boolean, reason?: string}> {
+        return await this.employeeService.modifyPhone(ID, newPhone)
     }
 
-    modifyInstagram(ID: string, newInstagram: string): {success: boolean, reason?: string} {
-        return this.employeeService.modifyInstagram(ID, newInstagram)
+    async modifyInstagram(ID: string, newInstagram: string): Promise<{success: boolean, reason?: string}> {
+        return await this.employeeService.modifyInstagram(ID, newInstagram)
     }
 
-    modifyRole(ID: string, newRole: EmployeeRole): {success: boolean, reason?: string} {
-        return this.employeeService.modifyRole(ID, newRole)
+    async modifyRole(ID: string, newRole: EmployeeRole): Promise<{success: boolean, reason?: string}> {
+        return await this.employeeService.modifyRole(ID, newRole)
     }
 }

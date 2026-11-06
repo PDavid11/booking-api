@@ -8,8 +8,8 @@ export class Employee {
     private instagram : string
     private role : EmployeeRole
 
-    constructor(name: string, phone: string, instagram: string, role: EmployeeRole) {
-        this.id = uuidv4()
+    constructor(name: string, phone: string, instagram: string, role: EmployeeRole, id?: string) {
+        this.id = id || uuidv4()
         this.name = name
         this.phone = phone
         this.instagram = instagram

@@ -9,15 +9,15 @@ export class GuestController {
         this.guestController = guestController
     }
 
-    add(req: Request, res: Response) {
-        const {name, phone, gender} = req.body
-        const result = this.guestController.add(name, phone, gender)
+    async add(req: Request, res: Response) {
+        const {name, phone} = req.body
+        const result = await this.guestController.add(name, phone)
         res.status(201).json(result)
     }
 
-    getByID(req: Request, res: Response) {
+    async getByID(req: Request, res: Response) {
         const id = req.params['id'] as string
-        const result = this.guestController.getByID(id)
+        const result = await this.guestController.getByID(id)
         if (!result.success) {
             res.status(404).json(result.reason)
         } else {

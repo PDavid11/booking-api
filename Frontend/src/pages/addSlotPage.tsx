@@ -97,7 +97,7 @@ export const AddSlotPage: React.FC = () => {
           <div className="flex flex-col gap-4">
             <Dropdown
               label="Employee"
-              options={employees.map((e) => ({ id: e.id, label: e.name }))}
+              options={Array.isArray(employees) ? employees.map((e) => ({ id: e.id, label: e.name })) : []}
               onSelect={(id: string) => setSelectedEmployee(id)}
             />
             <div className="flex flex-col gap-2">

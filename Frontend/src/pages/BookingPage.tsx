@@ -116,12 +116,12 @@ function BookingPage() {
       <div className="mt-8 flex flex-col gap-6 rounded-[12px] border border-line bg-surface p-6 md:p-8">
         <Dropdown
           label="Select Employee"
-          options={employees.map((e) => ({ id: e.id, label: e.name }))}
+          options={Array.isArray(employees) ? employees.map((e) => ({ id: e.id, label: e.name })) : []}
           onSelect={(id) => setSelectedEmployee(id)}
         />
         <Dropdown
           label="Select Service"
-          options={services.map((e) => ({ id: e.id, label: e.name }))}
+          options={Array.isArray(services) ? services.map((e) => ({ id: e.id, label: e.name })) : []}
           onSelect={(id) => setSelectedService(id)}
         />
 

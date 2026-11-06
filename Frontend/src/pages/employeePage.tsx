@@ -147,7 +147,7 @@ export const EmployeePage: React.FC = () => {
         <p className="mt-4 text-muted">No employees found.</p>
       ) : (
         <ul className="mt-4 grid gap-3 md:grid-cols-2">
-          {employees.map((employee) => (
+          {Array.isArray(employees) ? employees.map((employee) => (
             <li key={employee.id} className="rounded-[12px] border border-line bg-surface p-4">
               <strong>{employee.name}</strong> - {employee.role} - {employee.phone} - {employee.instagram}
               <button
@@ -157,7 +157,7 @@ export const EmployeePage: React.FC = () => {
                 Delete
               </button>
             </li>
-          ))}
+          )) : []}
         </ul>
       )}
     </div>

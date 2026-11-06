@@ -1,55 +1,67 @@
+import { Pool } from "pg";
 import { AvailableSlot } from "../models/AvailableSlot.js"
 
 export class AvailableSlotRepo {
 
-    private availableSlot : AvailableSlot[]
+    constructor(private pool : Pool) {}
 
-    constructor(availableSlot : AvailableSlot[] = []) {
-        this.availableSlot = availableSlot
+    private toSlot(row: any): AvailableSlot {
+        return new AvailableSlot(row.employeeid, new Date(row.starttime), row.isbooked, row.id)
     }
 
-    get AvailableSlot() {return this.availableSlot}
+    get AvailableSlot(): Promise<AvailableSlot[]> {
+        return this.pool.query('SELECT * FROM available_slots').then(res => res.rows.map(row => this.toSlot(row)))
+    }
 
-    getAll(): {success: boolean, reason?: string, result?: AvailableSlot[]} {
-        if (this.availableSlot.length < 1) {
+    async getAll(): Promise<{success: boolean, reason?: string, result?: AvailableSlot[]}> {
+        const query = 'SELECT * FROM available_slots'
+        const res = await this.pool.query(query)
+
+        if (res.rows.length < 1) {
             return {success: false, reason: "Not found"}
-        } else {
-            this.AvailableSlot.filter(slot => slot.IsBooked === false)
-            return {success: true, result: this.availableSlot}
         }
+
+        return {success: true, result: res.rows.map(row => this.toSlot(row))}
     }
 
-    getByID(ID: string): {success: boolean, reason?: string, result?: AvailableSlot} {
-        let result = this.availableSlot.find(r => r.ID === ID)
-        if (!result) {
+    async getByID(ID: string): Promise<{success: boolean, reason?: string, result?: AvailableSlot}> {
+        const query = 'SELECT * FROM available_slots WHERE id = $1'
+        const res = await this.pool.query(query, [ID])
+
+        if (res.rows.length === 0) {
             return {success: false, reason: "Not found"}
-        } else {
-            return {success: true, result: result}
         }
+
+        return {success: true, result: this.toSlot(res.rows[0])}
     }
 
-    add (employeeId: string, startTime: Date, isBooked: boolean): {result: string} {
-        let newAvailableSlot = new AvailableSlot(employeeId, startTime, isBooked)
-        this.availableSlot.push(newAvailableSlot)
+    async add(employeeId: string, startTime: Date, isBooked: boolean): Promise<{result: string}> {
+        const newAvailableSlot = new AvailableSlot(employeeId, startTime, isBooked)
+        const query = 'INSERT INTO available_slots (id, employeeid, starttime, isbooked) VALUES ($1, $2, $3, $4)'
+        await this.pool.query(query, [newAvailableSlot.ID, newAvailableSlot.EmployeeId, newAvailableSlot.StartTime, newAvailableSlot.IsBooked])
+
         return {result : "slot added successfully"}
     }
 
-    delete(ID: string): {success: boolean, reason?: string} {
-        let index = this.availableSlot.findIndex(i => i.ID === ID)
-        if (index === -1) {
+    async delete(ID: string): Promise<{success: boolean, reason?: string}> {
+        const query = 'DELETE FROM available_slots WHERE id = $1 RETURNING *'
+        const res = await this.pool.query(query, [ID])
+
+        if (res.rows.length === 0) {
             return {success: false, reason: "Not found"}
-        } else {
-            this.availableSlot.splice(index, 1)
-            return {success: true, reason: "Slot deleted successfully"}
         }
+
+        return {success: true, reason: "Slot deleted successfully"}
     }
 
-    modifySlot(ID: string, isBooked: boolean): {success: boolean, reason?: string} {
-        let slot = this.availableSlot.find(s => s.ID === ID)
-        if (!slot) {
+    async modifySlot(ID: string, isBooked: boolean): Promise<{success: boolean, reason?: string}> {
+        const query = 'UPDATE availableslots SET isbooked = $1 WHERE id = $2 RETURNING *'
+        const res = await this.pool.query(query, [isBooked, ID])
+
+        if (res.rows.length === 0) {
             return {success: false, reason: "Slot not found"}
         }
-        slot.isBooked = isBooked
+
         return {success: true, reason: "Slot modified successfully"}
     }
 }

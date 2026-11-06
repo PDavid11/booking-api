@@ -21,18 +21,6 @@ app.use('/appointments', AppointmentRoutes)
 app.use('/auth', AuthRoutes)
 app.use('/availableSlots', availableSlotRoutes)
 
-app.get("/health", (req, res) => {
-    res.json({status: "ok"})
-})
-
-app.get("/", (req, res) => {
-    res.send("run")
-})
-
 app.listen(PORT, async () => {
-
     console.log(`server on http://localhost:${PORT}`)
-
-    const res = await pool.query('SELECT * FROM manual_test')
-    console.log(res.rows)
 })

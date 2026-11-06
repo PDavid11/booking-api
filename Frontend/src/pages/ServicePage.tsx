@@ -131,7 +131,7 @@ export const ServicePage: React.FC = () => {
         <p className="mt-4 text-muted">No services available.</p>
       ) : (
         <ul className="mt-4 grid gap-3 md:grid-cols-2">
-          {services.map((service) => (
+          {Array.isArray(services) ? services.map((service) => (
             <li key={service.id} className="rounded-[12px] border border-line bg-surface p-4">
               <strong>{service.name}</strong> - Duration: {service.durationMinutes} min, Price:{" "}
               {service.price.toFixed(2)} Ft
@@ -142,7 +142,7 @@ export const ServicePage: React.FC = () => {
                 Delete
               </button>
             </li>
-          ))}
+          )) : []}
         </ul>
       )}
     </div>

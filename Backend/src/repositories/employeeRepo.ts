@@ -1,103 +1,107 @@
+import { Pool } from "pg";
 import type { EmployeeRole } from "../enums/enums.js";
 import { Employee } from "../models/Employee.js";
 
 export class EmployeeRepo {
 
-    private employee : Employee[]
+    constructor(private pool : Pool) {}
 
-    constructor(employee : Employee[] = []) {
-        this.employee = employee
+    private toEmployee(row: any): Employee {
+        return new Employee(row.name, row.phone, row.instagram, row.role, row.id)
     }
 
-    get Employee() {return this.employee}
-
-    getByID(ID: string): {success: boolean, reason?: string, result?: Employee} {
-        let result = this.employee.find(r => r.ID === ID)
-        if (!result) {
-            return {success: false, reason: "Not found"}          
-        } else {
-            return {success: true, result: result}
-        }
+    get Employee(): Promise<Employee[]> {
+        return this.getAll()
     }
 
-    getByRole(role: EmployeeRole): {success: boolean, reason?: string, result?: Employee[]} {
-        let result = this.employee.filter(r => r.Role === role)
-        if (result.length < 1) {
+    async getAll(): Promise<Employee[]> {
+        const query = 'SELECT * FROM employees'
+        const res = await this.pool.query(query)
+        return res.rows.map(row => this.toEmployee(row))
+    }
+
+    async getByID(ID: string): Promise<{success: boolean, reason?: string, result?: Employee}> {
+        const query = 'SELECT * FROM employees WHERE id = $1'
+        const res = await this.pool.query(query, [ID])
+
+        if (res.rows.length === 0) {
             return {success: false, reason: "Not found"}
-        } else {
-            return {success: true, result: result}
         }
+
+        return {success: true, result: this.toEmployee(res.rows[0])}
     }
 
-    add(name: string, phone: string, instagram: string, role: EmployeeRole): {result: Employee} {
-        let newEmployee = new Employee(name, phone, instagram, role)
-        this.employee.push(newEmployee)
+    async getByRole(role: EmployeeRole): Promise<{success: boolean, reason?: string, result?: Employee[]}> {
+        const query = 'SELECT * FROM employees WHERE role = $1'
+        const res = await this.pool.query(query, [role])
+
+        if (res.rows.length < 1) {
+            return {success: false, reason: "Not found"}
+        }
+
+        return {success: true, result: res.rows.map(row => this.toEmployee(row))}
+    }
+
+    async add(name: string, phone: string, instagram: string, role: EmployeeRole): Promise<{result: Employee}> {
+        const newEmployee = new Employee(name, phone, instagram, role)
+        const query = 'INSERT INTO employees (id, name, phone, instagram, role) VALUES ($1, $2, $3, $4, $5)'
+        await this.pool.query(query, [newEmployee.ID, newEmployee.Name, newEmployee.Phone, newEmployee.Instagram, newEmployee.Role])
+
         return {result : newEmployee}
     }
 
-    delete(ID: string): {success: boolean, reason?: string} {
-        let index = this.employee.findIndex(i => i.ID === ID)
-        if (index === -1) {
+    async delete(ID: string): Promise<{success: boolean, reason?: string}> {
+        const query = 'DELETE FROM employees WHERE id = $1 RETURNING *'
+        const res = await this.pool.query(query, [ID])
+
+        if (res.rows.length === 0) {
             return { success: false, reason: "Not found"}
-        } else {
-            this.employee.splice(index, 1)
-            return { success: true }
         }
+
+        return { success: true }
     }
 
-    modifyName(ID: string, newName: string): {success: boolean, reason?: string} {
-        let result = this.employee.find(r => r.ID === ID)
-        if (!result) {
+    async modifyName(ID: string, newName: string): Promise<{success: boolean, reason?: string}> {
+        const query = 'UPDATE employees SET name = $1 WHERE id = $2 RETURNING *'
+        const res = await this.pool.query(query, [newName, ID])
+
+        if (res.rows.length === 0) {
             return {success: false, reason: "Not found"}
-        } else {
-            for (let i of this.employee) {
-                if (i.ID === ID) {
-                    i.Name = newName
-                }
-            }
-            return {success: true}
         }
+
+        return {success: true}
     }
 
-    modifyPhone(ID: string, newPhone: string): {success: boolean, reason?: string} {
-        let result = this.employee.find(r => r.ID === ID)
-        if (!result) {
+    async modifyPhone(ID: string, newPhone: string): Promise<{success: boolean, reason?: string}> {
+        const query = 'UPDATE employees SET phone = $1 WHERE id = $2 RETURNING *'
+        const res = await this.pool.query(query, [newPhone, ID])
+
+        if (res.rows.length === 0) {
             return {success: false, reason: "Not found"}
-        } else {
-            for (let i of this.employee) {
-                if (i.ID === ID) {
-                    i.Phone = newPhone
-                }
-            }
-            return {success: true}
         }
+
+        return {success: true}
     }
 
-    modifyInstagram(ID: string, newInstagram: string): {success: boolean, reason?: string} {
-        let result = this.employee.find(r => r.ID === ID)
-        if (!result) {
+    async modifyInstagram(ID: string, newInstagram: string): Promise<{success: boolean, reason?: string}> {
+        const query = 'UPDATE employees SET instagram = $1 WHERE id = $2 RETURNING *'
+        const res = await this.pool.query(query, [newInstagram, ID])
+
+        if (res.rows.length === 0) {
             return {success: false, reason: "Not found"}
-        } else {
-            for (let i of this.employee) {
-                if (i.ID === ID) {
-                    i.Instagram = newInstagram
-                }
-            }
-            return {success: true}
         }
+
+        return {success: true}
     }
 
-    modifyRole(ID: string, newRole: EmployeeRole): {success: boolean, reason?: string} {
-        let result = this.employee.find(r => r.ID === ID)
-        if (!result) {
+    async modifyRole(ID: string, newRole: EmployeeRole): Promise<{success: boolean, reason?: string}> {
+        const query = 'UPDATE employees SET role = $1 WHERE id = $2 RETURNING *'
+        const res = await this.pool.query(query, [newRole, ID])
+
+        if (res.rows.length === 0) {
             return {success: false, reason: "Not found"}
-        } else {
-            for (let i of this.employee) {
-                if (i.ID === ID) {
-                    i.Role = newRole
-                }
-            }
-            return {success: true}
         }
+
+        return {success: true}
     }
 }

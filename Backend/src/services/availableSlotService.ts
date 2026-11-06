@@ -9,13 +9,13 @@ export class AvailableSlotService {
         this.availableSlotService = availableSlotService
     }
 
-    getAll(): {success: boolean, reason?: string, result?: AvailableSlot[]} {
-        const result = this.availableSlotService.getAll()
+    async getAll(): Promise<{success: boolean, reason?: string, result?: AvailableSlot[]}> {
+        const result = await this.availableSlotService.getAll()
         return result
     }
 
-    getByID(ID: string): {success: boolean, reason?: string, result?: AvailableSlot} {
-        const result = this.availableSlotService.getByID(ID)
+    async getByID(ID: string): Promise<{success: boolean, reason?: string, result?: AvailableSlot}> {
+        const result = await this.availableSlotService.getByID(ID)
         if (!result.success) {
             return {success: false, reason: result.reason!}
         } else {
@@ -23,17 +23,17 @@ export class AvailableSlotService {
         }
     }
 
-    add(employeeId: string, startTime: Date, isBooked: boolean) : {success: boolean, reason?: string} {
+    async add(employeeId: string, startTime: Date, isBooked: boolean) : Promise<{success: boolean, reason?: string}> {
         if (startTime < new Date()) {
             return {success: false, reason: "Start time must be in the future"}
         }
 
-        const result = this.availableSlotService.add(employeeId, startTime, isBooked)
+        const result = await this.availableSlotService.add(employeeId, startTime, isBooked)
         return {success: true, reason: result.result}
     }
 
-    delete(ID: string): {success: boolean, reason?: string} {
-        const result = this.availableSlotService.delete(ID)
+    async delete(ID: string): Promise<{success: boolean, reason?: string}> {
+        const result = await this.availableSlotService.delete(ID)
         if (!result.success) {
             return {success: false, reason: result.reason!}
         } else {
@@ -41,8 +41,8 @@ export class AvailableSlotService {
         }
     }
 
-    modifySlot(ID: string, isBooked: boolean): {success: boolean, reason?: string} {
-        const result = this.availableSlotService.modifySlot(ID, isBooked)
+    async modifySlot(ID: string, isBooked: boolean): Promise<{success: boolean, reason?: string}> {
+        const result = await this.availableSlotService.modifySlot(ID, isBooked)
         if (!result.success) {
             return {success: false, reason: result.reason!}
         } else {

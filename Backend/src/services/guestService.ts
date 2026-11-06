@@ -9,8 +9,8 @@ export class GuestService {
         this.guestService = guestService
     }
 
-    getByID(ID: string): {success: boolean, reason?: string, result?: Guest} {
-        let result = this.guestService.getByID(ID)
+    async getByID(ID: string): Promise<{success: boolean, reason?: string, result?: Guest}> {
+        let result = await this.guestService.getByID(ID)
         if (!result.success) {
             return {success: false, reason: result.reason!}
         } else {
@@ -18,10 +18,10 @@ export class GuestService {
         }
     }
 
-    add(name: string, phone: string) : {result : Guest} {
-        let result = this.guestService.getByPhone(phone)
+    async add(name: string, phone: string) : Promise<{result : Guest}> {
+        let result = await this.guestService.getByPhone(phone)
         if (!result.success) {
-            return this.guestService.add(name, phone)
+            return await this.guestService.add(name, phone)
         } else {
             return {result : result.result!}
         }

@@ -13,8 +13,8 @@ export class Appointment {
     private status: AppointmentStatus
     private createdAt: Date
 
-    constructor(guestID: string, serviceID: string, employeeID: string,  startTime: Date, endTime: Date, slotID: string) {
-        this.id = uuid()
+    constructor(guestID: string, serviceID: string, employeeID: string,  startTime: Date, endTime: Date, slotID: string, id?: string, status?: AppointmentStatus, createdAt?: Date) {
+        this.id = id || uuid()
         this.guestID = guestID
         this.serviceID = serviceID
         this.employeeID = employeeID

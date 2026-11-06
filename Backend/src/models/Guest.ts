@@ -1,5 +1,4 @@
 import {v4 as uuidv4} from "uuid"
-import { Gender } from "../enums/enums.js";
 
 export class Guest {
 
@@ -7,8 +6,8 @@ export class Guest {
     private name : string
     private phone : string
 
-    constructor(name: string, phone: string) {
-        this.id = uuidv4()
+    constructor(name: string, phone: string, id?: string) {
+        this.id = id || uuidv4()
         this.name = name
         this.phone = phone
     }

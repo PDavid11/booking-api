@@ -9,27 +9,27 @@ export class ServiceService {
         this.serviceService = serviceService
     }
 
-    add(name: string, durationMinutes: number, price: number) {
-        return this.serviceService.add(name, durationMinutes, price)
+    async add(name: string, durationMinutes: number, price: number): Promise<{result: Service}> {
+        return await this.serviceService.add(name, durationMinutes, price)
     }
 
-    delete(ID: string): {success: boolean, reason?: string} {
-        return this.serviceService.delete(ID)
+    async delete(ID: string): Promise<{success: boolean, reason?: string}> {
+        return await this.serviceService.delete(ID)
     }
 
-    modifyName(ID: string, newName: string): {success: boolean, reason?: string} {
-        return this.serviceService.modifyName(ID, newName)
+    async modifyName(ID: string, newName: string): Promise<{success: boolean, reason?: string}> {
+        return await this.serviceService.modifyName(ID, newName)
     }
 
-    modifyPrice(ID: string, newPrice: number): {success: boolean, reason?: string} {
-        return this.serviceService.modifyPrice(ID, newPrice)
+    async modifyPrice(ID: string, newPrice: number): Promise<{success: boolean, reason?: string}> {
+        return await this.serviceService.modifyPrice(ID, newPrice)
     }
 
-    modifyDurationMinutes(ID: string, newDurationMinutes: number): {success: boolean, reason?: string} {
-        return this.serviceService.modifyDurationMinutes(ID, newDurationMinutes)
+    async modifyDurationMinutes(ID: string, newDurationMinutes: number): Promise<{success: boolean, reason?: string}> {
+        return await this.serviceService.modifyDurationMinutes(ID, newDurationMinutes)
     }
 
-    getAll() : {result: Service[]} {
-        return {result : this.serviceService.Service}
+    async getAll() : Promise<{result: Service[]}> {
+        return {result : await this.serviceService.Service}
     }
 }

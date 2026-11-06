@@ -19,85 +19,89 @@ export class AppointmentService {
         this.appointmentRepo = appointmentRepo
     }
 
-    confirmAppointment(ID: string): {success: boolean, reason?: string} {
-        const result = this.appointmentRepo.getByID(ID)
+    async confirmAppointment(ID: string): Promise<{success: boolean, reason?: string}> {
+        const result = await this.appointmentRepo.getByID(ID)
         if (!result.success) {
             return {success: false, reason: result.reason!}
         } else {
             if (result.result!.Status !== AppointmentStatus.PENDING) {
                 return {success: false, reason: "This appointment is not pending!"}
             } else {
-                return this.appointmentRepo.confirmAppointment(ID)
+                return await this.appointmentRepo.confirmAppointment(ID)
             }           
         }        
     }
 
-    rejectAppointment(ID: string): {success: boolean, reason?: string} {
-        const result = this.appointmentRepo.getByID(ID)
+    async rejectAppointment(ID: string): Promise<{success: boolean, reason?: string}> {
+        const result = await this.appointmentRepo.getByID(ID)
         if (!result.success) {
             return {success: false, reason: result.reason!}
         } else {
             if (result.result!.Status !== AppointmentStatus.PENDING) {
                 return {success: false, reason: "This appointment is not pending!"}
             } else {
-                return this.appointmentRepo.rejectAppointment(ID)
+                return await this.appointmentRepo.rejectAppointment(ID)
             }           
         }
     }
 
-    cancelAppointment(ID: string): {success: boolean, reason?: string} {
-        const result = this.appointmentRepo.getByID(ID)
+    async cancelAppointment(ID: string): Promise<{success: boolean, reason?: string}> {
+        const result = await this.appointmentRepo.getByID(ID)
         if (!result.success) {
             return {success: false, reason: result.reason!}
         } else {
             if (result.result!.Status === AppointmentStatus.CONFIRMED || result.result!.Status === AppointmentStatus.PENDING) {
-                return this.appointmentRepo.cancelAppointment(ID)
+                return await this.appointmentRepo.cancelAppointment(ID)
             } else {
                 return {success: false, reason: "This appointment is not pending or confirmed!"}
             }           
         }
     }
 
-    deleteAppointment(ID: string): {success: boolean, reason?: string} {
-        const result = this.appointmentRepo.getByID(ID)
+    async deleteAppointment(ID: string): Promise<{success: boolean, reason?: string}> {
+        const result = await this.appointmentRepo.getByID(ID)
         if (!result.success) {
             return {success: false, reason: result.reason!}
         } else {
-            return this.appointmentRepo.delete(ID)
+            return await this.appointmentRepo.delete(ID)
         }
     } 
 
-    add(name: string, phone: string, employeeID: string, serviceID: string, slotID: string, startTime: string): {success: boolean, reason?: string} {
-        let guest = this.guestService.add(name, phone)
-        const duration = this.serviceRepo.getByID(serviceID).result!.DurationMinutes
-        const startDate = new Date(startTime)
-        const endTime = new Date(startDate.getTime() + duration * 60000)
-        if (!this.employeeRepo.getByID(employeeID).success) {
+    async add(name: string, phone: string, employeeID: string, serviceID: string, slotID: string, startTime: string): Promise<{success: boolean, reason?: string}> {
+        const guest = await this.guestService.add(name, phone)
+        const service = await this.serviceRepo.getByID(serviceID)
+        const employee = await this.employeeRepo.getByID(employeeID)
+        if (!employee.success) {
             return {success: false, reason: "Employee not found"}
-        } else if (!this.serviceRepo.getByID(serviceID).success) {
+        } else if (!service.success) {
             return {success: false, reason: "Service not found"}
         } else {
-             return this.appointmentRepo.add(guest.result.ID, serviceID, employeeID, slotID, startDate, endTime,)
+            const duration = service.result!.DurationMinutes
+            const startDate = new Date(startTime)
+            const endTime = new Date(startDate.getTime() + duration * 60000)
+            return await this.appointmentRepo.add(guest.result.ID, serviceID, employeeID, slotID, startDate, endTime)
         }
     }
 
-    getByID(ID: string): {success: boolean, reason?: string} {
-        return this.appointmentRepo.getByID(ID)
+    async getByID(ID: string): Promise<{success: boolean, reason?: string, result?: Appointment}> {
+        return await this.appointmentRepo.getByID(ID)
     }
 
-    getByStatus(status: AppointmentStatus): {success: boolean, reason?: string, result?: any[]} {
-        const appointmentP = this.appointmentRepo.getByStatus(status)
-        const appointmentWithGuestData = (
-            appointmentP.result?.map((app) => {
-                const guest = this.guestService.getByID(app.guestID)
+    async getByStatus(status: AppointmentStatus): Promise<{success: boolean, reason?: string, result?: any[]}> {
+        const appointmentP = await this.appointmentRepo.getByStatus(status)
+        const appointmentWithGuestData = await Promise.all(
+            (appointmentP.result ?? []).map(async (app) => {
+                const guest = await this.guestService.getByID(app.guestID)
+                const service = await this.serviceRepo.getByID(app.serviceID)
+                const employee = await this.employeeRepo.getByID(app.employeeID)
                 return {
                     ...app,
                     guestName: guest.result!.Name,
                     phone: guest.result!.Phone,
-                    serviceName: this.serviceRepo.getByID(app.serviceID).result!.Name,
-                    employeeName: this.employeeRepo.getByID(app.employeeID).result!.Name
+                    serviceName: service.result!.Name,
+                    employeeName: employee.result!.Name
                 }
-            }) ?? []
+            })
         )
         if (!appointmentP.success) {
             return appointmentP.reason !== undefined
@@ -108,12 +112,12 @@ export class AppointmentService {
         }
     }
 
-    getByEmployeeID(ID: string): {success: boolean, reason?: string, result?: Appointment[]} {
-        return this.appointmentRepo.getByEmployeeID(ID)
+    async getByEmployeeID(ID: string): Promise<{success: boolean, reason?: string, result?: Appointment[]}> {
+        return await this.appointmentRepo.getByEmployeeID(ID)
     }
 
-    getActive(): {success: boolean, reason?: string, result?: Appointment[]} {
-        const appointments = this.appointmentRepo.getAll()
+    async getActive(): Promise<{success: boolean, reason?: string, result?: Appointment[]}> {
+        const appointments = await this.appointmentRepo.getAll()
         const activeAppointments = appointments.result?.filter(app => (app.Status !== "CANCELLED" && app.Status !== "REJECTED"))
         return {
             success: appointments.success,

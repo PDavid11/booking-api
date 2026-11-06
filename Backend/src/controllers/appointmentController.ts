@@ -10,15 +10,15 @@ export class AppointmentController {
         this.appointmentController = appointmentController
     }
 
-    add(req: Request, res: Response) {
+    async add(req: Request, res: Response) {
         const {name, phone, serviceID, employeeID, slotID, startTime} = req.body
-        const result = this.appointmentController.add(name, phone, employeeID, serviceID, slotID, startTime)
+        const result = await this.appointmentController.add(name, phone, employeeID, serviceID, slotID, startTime)
         res.status(201).json(result)
     }
 
-    delete(req: Request, res: Response) {
+    async delete(req: Request, res: Response) {
         const {id} = req.body
-        const result = this.appointmentController.deleteAppointment(id)
+        const result = await this.appointmentController.deleteAppointment(id)
         if (!result.success) {
             res.status(500).json(result.reason)
         } else {
@@ -26,24 +26,24 @@ export class AppointmentController {
         }
     }
 
-    modifyStatus(req: Request, res: Response) {
+    async modifyStatus(req: Request, res: Response) {
         const {id, status} = req.body
         if (status === "CONFIRMED") {
-            const result = this.appointmentController.confirmAppointment(id)
+            const result = await this.appointmentController.confirmAppointment(id)
             if (!result.success) {
                 res.status(500).json(result.reason)
             } else {
                 res.status(200).json({success: true})
             }
         } else if (status === "REJECTED") {
-            const result = this.appointmentController.rejectAppointment(id)
+            const result = await this.appointmentController.rejectAppointment(id)
             if (!result.success) {
                 res.status(500).json(result.reason)
             } else {
                 res.status(200).json({success: true})
             }
         } else if (status === "CANCELLED") {
-            const result = this.appointmentController.cancelAppointment(id)
+            const result = await this.appointmentController.cancelAppointment(id)
             if (!result.success) {
                 res.status(500).json(result.reason)
             } else {
@@ -54,9 +54,9 @@ export class AppointmentController {
         }
     }
 
-    getByStatus(req: Request, res: Response) {
+    async getByStatus(req: Request, res: Response) {
         const status = req.params['status'] as AppointmentStatus 
-        const result = this.appointmentController.getByStatus(status)
+        const result = await this.appointmentController.getByStatus(status)
         if (!result.success) {
             res.status(404).json(result.reason)
         } else {
@@ -64,9 +64,9 @@ export class AppointmentController {
         }
     }
 
-    getByID(req: Request, res: Response) {
+    async getByID(req: Request, res: Response) {
         const id = req.params['id'] as string
-        const result = this.appointmentController.getByID(id)
+        const result = await this.appointmentController.getByID(id)
         if (!result.success) {
             res.status(404).json(result.reason)
         } else {
@@ -74,9 +74,9 @@ export class AppointmentController {
         }
     }
 
-    getByEmployeeID(req: Request, res: Response) {
+    async getByEmployeeID(req: Request, res: Response) {
         const id = req.params['employeeID'] as string
-        const result = this.appointmentController.getByEmployeeID(id)
+        const result = await this.appointmentController.getByEmployeeID(id)
         if (!result.success) {
             res.status(404).json(result.reason)
         } else {
@@ -84,8 +84,8 @@ export class AppointmentController {
         }
     }
 
-    getActive(req: Request, res: Response) {
-        const result = this.appointmentController.getActive()
+    async getActive(req: Request, res: Response) {
+        const result = await this.appointmentController.getActive()
         if (!result.success) {
             res.status(404).json(result.reason)
         } else {

@@ -1,125 +1,176 @@
+import { Pool } from "pg";
 import { AppointmentStatus } from "../enums/enums.js";
 import { Appointment } from "../models/Appointment.js";
 
 export class AppointmentRepo {
 
-    private appointment : Appointment[]
+    constructor(private pool : Pool) {}
 
-    constructor(appointment : Appointment[] = []) {
-        this.appointment = appointment
+    private toAppointment(row: any): Appointment {
+        return new Appointment(
+            row.guest_id,
+            row.service_id,
+            row.employee_id,
+            new Date(row.start_time),
+            new Date(row.end_time),
+            row.slot_id,
+            row.id,
+            row.status,
+            new Date(row.created_at)
+        )
     }
 
-    get Appointment() {return this.appointment}
+    get Appointment(): Promise<Appointment[]> {
+        return this.pool.query('SELECT * FROM appointments').then(res => res.rows.map(row => this.toAppointment(row)))
+    }
 
-    getAll(): {success: boolean, reason?: string, result?: Appointment[]} {
-        if (this.appointment.length < 1) {
+    async getAll(): Promise<{success: boolean, reason?: string, result?: Appointment[]}> {
+        const query = 'SELECT * FROM appointments'
+        const res = await this.pool.query(query)
+
+        if (res.rows.length < 1) {
             return {success: false, reason: "Not found"}
-        } else {
-            return {success: true, result: this.appointment}
         }
+
+        return {success: true, result: res.rows.map(row => this.toAppointment(row))}
     }
 
-    getByID(ID: string): {success: boolean, reason?: string, result?: Appointment} {
-        let result = this.appointment.find(r => r.ID === ID)
-        if (!result) {
+    async getByID(ID: string): Promise<{success: boolean, reason?: string, result?: Appointment}> {
+        const query = 'SELECT * FROM appointments WHERE id = $1'
+        const res = await this.pool.query(query, [ID])
+
+        if (res.rows.length === 0) {
             return {success : false, reason: "Not found"}
-        } else {
-            return {success: true, result: result}
         }
+
+        return {success: true, result: this.toAppointment(res.rows[0])}
     }
 
-    getByStatus(status: AppointmentStatus): {success: boolean, reason?: string, result?: Appointment[]} {
-        let result = this.appointment.filter(r => r.Status === status)
-        if (result.length < 1) {
+    async getByStatus(status: AppointmentStatus): Promise<{success: boolean, reason?: string, result?: Appointment[]}> {
+        const query = 'SELECT * FROM appointments WHERE status = $1'
+        const res = await this.pool.query(query, [status])
+
+        if (res.rows.length < 1) {
             return {success: false, reason: "Not found"}
-        } else {
-            return {success: true, result: result}
         }
+
+        return {success: true, result: res.rows.map(row => this.toAppointment(row))}
     }
 
-    getByDate(date: Date): {success: boolean, reason?: string, result?: Appointment[]} {
-        let result = this.appointment.filter(r => (
-            r.StartTime.getFullYear() === date.getFullYear() && 
-            r.StartTime.getMonth() === date.getMonth() && 
-            r.StartTime.getDate() === date.getDate()
-        ))
-        if (result.length < 1) {
+    async getByDate(date: Date): Promise<{success: boolean, reason?: string, result?: Appointment[]}> {
+        const start = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+        const end = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)
+        const query = 'SELECT * FROM appointments WHERE start_time >= $1 AND start_time < $2'
+        const res = await this.pool.query(query, [start, end])
+
+        if (res.rows.length < 1) {
             return {success: false, reason: "Not found"}
-        } else {
-            return {success: true, result: result}
         }
+
+        return {success: true, result: res.rows.map(row => this.toAppointment(row))}
     }
 
-    getByGuestID(ID: string): {success: boolean, reason?: string, result?: Appointment[]} {
-        let result = this.appointment.filter(r => r.GuestID === ID)
-        if (result.length < 1) {
+    async getByGuestID(ID: string): Promise<{success: boolean, reason?: string, result?: Appointment[]}> {
+        const query = 'SELECT * FROM appointments WHERE guest_id = $1'
+        const res = await this.pool.query(query, [ID])
+
+        if (res.rows.length < 1) {
             return {success: false, reason: "Not found"}
-        } else {
-            return {success: true, result: result}
         }
+
+        return {success: true, result: res.rows.map(row => this.toAppointment(row))}
     }
 
-    getByEmployeeID(ID: string): {success: boolean, reason?: string, result?: Appointment[]} {
-        let result = this.appointment.filter(r => r.EmployeeID === ID)
-        if (result.length < 1) {
+    async getByEmployeeID(ID: string): Promise<{success: boolean, reason?: string, result?: Appointment[]}> {
+        const query = 'SELECT * FROM appointments WHERE employee_id = $1'
+        const res = await this.pool.query(query, [ID])
+
+        if (res.rows.length < 1) {
             return {success: false, reason: "Not found"}
-        } else {
-            return {success: true, result: result}
         }
+
+        return {success: true, result: res.rows.map(row => this.toAppointment(row))}
     }
 
-    delete(ID: string): {success: boolean, reason?: string} {
-        let index = this.appointment.findIndex(i => i.ID === ID)
-        if (index === -1) {
+    async delete(ID: string): Promise<{success: boolean, reason?: string}> {
+        const query = 'DELETE FROM appointments WHERE id = $1 RETURNING *'
+        const res = await this.pool.query(query, [ID])
+
+        if (res.rows.length === 0) {
             return {success: false, reason: "Not found"}
-        } else {
-            this.appointment.splice(index, 1)
-            return {success: true}
         }
+
+        return {success: true}
     }
 
-    confirmAppointment(ID: string): {success: boolean, reason?: string} {
-        let index = this.appointment.findIndex(i => i.ID === ID)
-        if (index === -1) {
+    async confirmAppointment(ID: string): Promise<{success: boolean, reason?: string}> {
+        const found = await this.getByID(ID)
+        if (!found.success || !found.result) {
             return {success: false, reason: "Not found"}
-        } else {
-            this.appointment[index]?.confirm()
-            return {success: true}
         }
+
+        found.result.confirm()
+        const query = 'UPDATE appointments SET status = $1 WHERE id = $2'
+        await this.pool.query(query, [found.result.Status, ID])
+        return {success: true}
     }
 
-    rejectAppointment(ID: string): {success: boolean, reason?: string} {
-        let index = this.appointment.findIndex(i => i.ID === ID)
-        if (index === -1) {
+    async rejectAppointment(ID: string): Promise<{success: boolean, reason?: string}> {
+        const found = await this.getByID(ID)
+        if (!found.success || !found.result) {
             return {success: false, reason: "Not found"}
-        } else {
-            this.appointment[index]?.reject()
-            return {success: true}
         }
+
+        found.result.reject()
+        const query = 'UPDATE appointments SET status = $1 WHERE id = $2'
+        await this.pool.query(query, [found.result.Status, ID])
+        return {success: true}
     }
 
-    cancelAppointment(ID: string): {success: boolean, reason?: string} {
-        let index = this.appointment.findIndex(i => i.ID === ID)
-        if (index === -1) {
+    async cancelAppointment(ID: string): Promise<{success: boolean, reason?: string}> {
+        const found = await this.getByID(ID)
+        if (!found.success || !found.result) {
             return {success: false, reason: "Not found"}
-        } else {
-            this.appointment[index]?.cancel()
-            return {success: true}
         }
+
+        found.result.cancel()
+        const query = 'UPDATE appointments SET status = $1 WHERE id = $2'
+        await this.pool.query(query, [found.result.Status, ID])
+        return {success: true}
     }
 
-    add(guestID: string, serviceID: string, employeeID: string, slotID: string, startTime: Date, endTime: Date): {success: boolean, reason?: string} {
-        let results : Appointment[] = []
-        for (let i of this.appointment) {
-            if (!(startTime >= i.EndTime || endTime <= i.StartTime) && employeeID === i.EmployeeID && i.Status !== AppointmentStatus.CANCELLED && i.Status !== AppointmentStatus.REJECTED) {
-                results.push(i)
-            }
-        }
-        if (results.length > 0) {
+    async add(guestID: string, serviceID: string, employeeID: string, slotID: string, startTime: Date, endTime: Date): Promise<{success: boolean, reason?: string}> {
+        const conflictQuery = `SELECT * FROM appointments
+            WHERE employee_id = $1
+            AND status NOT IN ($2, $3)
+            AND NOT (start_time >= $5 OR end_time <= $4)`
+        const conflict = await this.pool.query(conflictQuery, [
+            employeeID,
+            AppointmentStatus.CANCELLED,
+            AppointmentStatus.REJECTED,
+            startTime,
+            endTime
+        ])
+
+        if (conflict.rows.length > 0) {
             return {success: false, reason: "Appointment conflict"}
-        } else {
-            this.appointment.push(new Appointment(guestID, serviceID, employeeID, startTime, endTime, slotID))
-            return {success: true}
         }
+
+        const appointment = new Appointment(guestID, serviceID, employeeID, startTime, endTime, slotID)
+        const query = `INSERT INTO appointments (id, guest_id, service_id, employee_id, slot_id, start_time, end_time, status, created_at)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
+        await this.pool.query(query, [
+            appointment.ID,
+            appointment.GuestID,
+            appointment.ServiceID,
+            appointment.EmployeeID,
+            appointment.SlotID,
+            appointment.StartTime,
+            appointment.EndTime,
+            appointment.Status,
+            appointment.CreatedAt
+        ])
+
+        return {success: true}
     }
 }

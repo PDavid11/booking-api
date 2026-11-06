@@ -6,8 +6,8 @@ export class Service {
     private durationMinutes : number
     private price : number
 
-    constructor(name: string, durationMinutes: number, price: number) {
-        this.id = uuid()
+    constructor(name: string, durationMinutes: number, price: number, id?: string) {
+        this.id = id || uuid()
         this.name = name
         this.durationMinutes = durationMinutes
         this.price = price

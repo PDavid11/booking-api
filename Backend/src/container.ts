@@ -15,13 +15,14 @@ import { AppointmentController } from "./controllers/appointmentController.js";
 import { AvailableSlotController } from "./controllers/availableSlotController.js";
 import { AuthService } from "./services/authService.js";
 import { AuthController } from "./controllers/authController.js";
+import pool from "./db.js";
 
 
-export const guestRepo = new GuestRepo()
-export const employeeRepo = new EmployeeRepo()
-export const appointmentRepo = new AppointmentRepo()
-export const serviceRepo = new ServiceRepo()
-export const availableSlotRepo = new AvailableSlotRepo()
+export const guestRepo = new GuestRepo(pool)
+export const employeeRepo = new EmployeeRepo(pool)
+export const appointmentRepo = new AppointmentRepo(pool)
+export const serviceRepo = new ServiceRepo(pool)
+export const availableSlotRepo = new AvailableSlotRepo(pool)
 export const guestService = new GuestService(guestRepo)
 export const employeeService = new EmployeeService(employeeRepo)
 export const serviceService = new ServiceService(serviceRepo)

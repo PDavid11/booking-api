@@ -9,36 +9,52 @@ export class ServiceController {
         this.serviceController = serviceController
      }
 
-     add(req: Request, res: Response) {
-        const {name, durationMinutes, price} = req.body
-        const result = this.serviceController.add(name, durationMinutes, price)
-        res.status(201).json(result)
+     async add(req: Request, res: Response) {
+        try {
+            const {name, durationMinutes, price} = req.body
+            const result = await this.serviceController.add(name, Number(durationMinutes), Number(price))
+            res.status(201).json(result)
+        } catch {
+            res.status(500).json({success: false, message: "Failed to add service"})
+        }
      }
 
-     delete(req: Request, res: Response) {
-        const {id} = req.body
-        const result = this.serviceController.delete(id)
-        if (!result.success) {
-            res.status(404).json(result.reason)
-        } else {
+     async delete(req: Request, res: Response) {
+        try {
+            const {id} = req.body
+            const result = await this.serviceController.delete(id)
+            if (!result.success) {
+                res.status(404).json(result.reason)
+            } else {
+                res.status(200).json(result)
+            }
+        } catch {
+            res.status(500).json({success: false, message: "Failed to delete service"})
+        }
+     }
+
+     async modify(req: Request, res: Response) {
+        try {
+            const {id, name, durationMinutes, price} = req.body
+            const NN = await this.serviceController.modifyName(id, name)
+            const ND = await this.serviceController.modifyDurationMinutes(id, Number(durationMinutes))
+            const NP = await this.serviceController.modifyPrice(id, Number(price))
+            if (NN.success && ND.success && NP.success) {
+                res.status(200).json({success: true})
+            } else {
+                res.status(400).json({success: false})
+            }
+        } catch {
+            res.status(500).json({success: false, message: "Failed to modify service"})
+        }
+     }
+
+     async getAll(req: Request, res: Response) {
+        try {
+            const result = await this.serviceController.getAll()
             res.status(200).json(result)
+        } catch {
+            res.status(500).json({success: false, message: "Failed to fetch services"})
         }
-     }
-
-     modify(req: Request, res: Response) {
-        const {id, name, durationMinutes, price} = req.body
-        const NN = this.serviceController.modifyName(id, name)
-        const ND = this.serviceController.modifyDurationMinutes(id, durationMinutes)
-        const NP = this.serviceController.modifyPrice(id, price)
-        if (NN.success && ND.success && NP.success) {
-            res.status(200).json({success: true})
-        } else {
-            res.status(400).json({success: false})
-        }
-     }
-
-     getAll(req: Request, res: Response) {
-        const result = this.serviceController.getAll()
-        res.status(200).json(result)
      }
 }

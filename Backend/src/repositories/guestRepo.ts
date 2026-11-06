@@ -1,47 +1,53 @@
-import type { Gender } from "../enums/enums.js";
+import { Pool } from "pg";
 import { Guest } from "../models/Guest.js";
 
 export class GuestRepo {
 
-    private guest : Guest[]
+    constructor(private pool : Pool) {}
 
-    constructor(guest : Guest[] = []) {
-        this.guest = guest
-    }
+    async getByID(ID: string): Promise<{success: boolean, reason?: string, result?: Guest}> {
+        const query = 'SELECT * FROM guests WHERE id = $1'
+        const res = await this.pool.query(query, [ID])
 
-    get Guest() {return this.guest}
-
-    getByID(ID: string): {success: boolean, reason?: string, result?: Guest} {
-        let result = this.guest.find(r => r.ID === ID)
-        if (!result) {
-            return {success: false, reason: "Not found"}          
-        } else {
-            return {success: true, result: result}
+        if (res.rows.length === 0) {
+            return {success: false, reason: "Not found"}
         }
+
+        const row = res.rows[0]
+        const guest = new Guest(row.name, row.phone, row.id)
+        return {success: true, result: guest}
     }
 
-    getByPhone(phone: string): {success: boolean, reason?: string, result?: Guest} {
-        let result = this.Guest.find(r => r.Phone === phone)
-        if (!result) {
-            return {success: false, reason: "Not found"}    
-        } else {
-            return {success: true, result: result}
+    async getByPhone(phone: string): Promise<{success: boolean, reason?: string, result?: Guest}> {
+        const query = 'SELECT * FROM guests WHERE phone = $1'
+        const res = await this.pool.query(query, [phone])
+
+        if (res.rows.length === 0) {
+            return {success: false, reason: "Not found"}
         }
+
+        const row = res.rows[0]
+        const guest = new Guest(row.name, row.phone, row.id)
+
+        return {success: true, result: guest}
     }
 
-    add(name: string, phone: string): {result : Guest} {
-        let NewGuest = new Guest(name, phone)
-        this.guest.push(NewGuest)
-        return {result : NewGuest}
+    async add(name: string, phone: string): Promise <{result : Guest}> {
+        const newGuest = new Guest(name, phone)
+        const query = 'INSERT INTO guests (id, name, phone) VALUES ($1, $2, $3)'
+        await this.pool.query(query, [newGuest.ID, newGuest.Name, newGuest.Phone])
+
+        return {result: newGuest}
     }
 
-    delete(ID: string): {success: boolean, reason?: string} {
-        let index = this.guest.findIndex(i => i.ID === ID)
-        if (index === -1) {
-            return { success: false, reason: "Not found"}
-        } else {
-            this.guest.splice(index, 1)
-            return { success: true }
+    async delete(ID: string): Promise<{success: boolean, reason?: string}> {
+        const query = 'DELETE FROM guests WHERE id = $1 RETURNING *'
+        const res = await this.pool.query(query, [ID])
+
+        if (res.rows.length === 0) {
+            return {success: false, reason: "Not found"}
         }
+
+        return {success: true}
     }
 }
