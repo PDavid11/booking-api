@@ -52,11 +52,12 @@ export class AvailableSlotController {
 
     async modifySlot(req: Request, res: Response) {
         let { id, isBooked } = req.body
-        let isBookedBoolean : boolean
+        let isBookedBoolean : boolean = true
+        let isNotBookedBoolean : boolean = false
         if (isBooked === "true") {
-            isBooked = Boolean(true)
+            isBooked = isBookedBoolean
         } else {
-            isBooked = Boolean(false)
+            isBooked = isNotBookedBoolean
         }
         const result = await this.availableSlotController.modifySlot(id, isBooked)
         if (!result.success) {

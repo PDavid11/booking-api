@@ -8,15 +8,15 @@ export class AppointmentRepo {
 
     private toAppointment(row: any): Appointment {
         return new Appointment(
-            row.guest_id,
-            row.service_id,
-            row.employee_id,
-            new Date(row.start_time),
-            new Date(row.end_time),
-            row.slot_id,
+            row.guestid,
+            row.serviceid,
+            row.employeeid,
+            new Date(row.starttime),
+            new Date(row.endtime),
+            row.slotid,
             row.id,
             row.status,
-            new Date(row.created_at)
+            new Date(row.createdat)
         )
     }
 
@@ -60,7 +60,7 @@ export class AppointmentRepo {
     async getByDate(date: Date): Promise<{success: boolean, reason?: string, result?: Appointment[]}> {
         const start = new Date(date.getFullYear(), date.getMonth(), date.getDate())
         const end = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)
-        const query = 'SELECT * FROM appointments WHERE start_time >= $1 AND start_time < $2'
+        const query = 'SELECT * FROM appointments WHERE starttime >= $1 AND starttime < $2'
         const res = await this.pool.query(query, [start, end])
 
         if (res.rows.length < 1) {
@@ -71,7 +71,7 @@ export class AppointmentRepo {
     }
 
     async getByGuestID(ID: string): Promise<{success: boolean, reason?: string, result?: Appointment[]}> {
-        const query = 'SELECT * FROM appointments WHERE guest_id = $1'
+        const query = 'SELECT * FROM appointments WHERE guestid = $1'
         const res = await this.pool.query(query, [ID])
 
         if (res.rows.length < 1) {
@@ -82,7 +82,7 @@ export class AppointmentRepo {
     }
 
     async getByEmployeeID(ID: string): Promise<{success: boolean, reason?: string, result?: Appointment[]}> {
-        const query = 'SELECT * FROM appointments WHERE employee_id = $1'
+        const query = 'SELECT * FROM appointments WHERE employeeid = $1'
         const res = await this.pool.query(query, [ID])
 
         if (res.rows.length < 1) {
@@ -141,9 +141,9 @@ export class AppointmentRepo {
 
     async add(guestID: string, serviceID: string, employeeID: string, slotID: string, startTime: Date, endTime: Date): Promise<{success: boolean, reason?: string}> {
         const conflictQuery = `SELECT * FROM appointments
-            WHERE employee_id = $1
+            WHERE employeeid = $1
             AND status NOT IN ($2, $3)
-            AND NOT (start_time >= $5 OR end_time <= $4)`
+            AND NOT (starttime >= $5 OR endtime <= $4)`
         const conflict = await this.pool.query(conflictQuery, [
             employeeID,
             AppointmentStatus.CANCELLED,
@@ -157,7 +157,7 @@ export class AppointmentRepo {
         }
 
         const appointment = new Appointment(guestID, serviceID, employeeID, startTime, endTime, slotID)
-        const query = `INSERT INTO appointments (id, guest_id, service_id, employee_id, slot_id, start_time, end_time, status, created_at)
+        const query = `INSERT INTO appointments (id, guestid, serviceid, employeeid, slotid, starttime, endtime, status, createdat)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
         await this.pool.query(query, [
             appointment.ID,

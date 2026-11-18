@@ -55,7 +55,7 @@ export class AvailableSlotRepo {
     }
 
     async modifySlot(ID: string, isBooked: boolean): Promise<{success: boolean, reason?: string}> {
-        const query = 'UPDATE availableslots SET isbooked = $1 WHERE id = $2 RETURNING *'
+        const query = 'UPDATE available_slots SET isbooked = $1 WHERE id = $2 RETURNING *'
         const res = await this.pool.query(query, [isBooked, ID])
 
         if (res.rows.length === 0) {

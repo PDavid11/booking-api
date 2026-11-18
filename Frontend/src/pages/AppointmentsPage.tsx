@@ -36,7 +36,6 @@ export default function AppointmentsPage() {
 
   const handleStatusChange = async (id: string, slotID: string, newStatus: "CONFIRMED" | "CANCELLED" | "REJECTED") => {
     if (newStatus === "CANCELLED" || newStatus === "REJECTED") {
-      console.log(slotID);
       await fetch(`http://localhost:3000/availableSlots`, {
         method: "PATCH",
         headers: {
@@ -56,6 +55,7 @@ export default function AppointmentsPage() {
           fetchAppointments();
         })
         .catch((err) => console.log("PATCH request error:", err));
+
     }
     await fetch(`http://localhost:3000/appointments`, {
       method: "PATCH",
